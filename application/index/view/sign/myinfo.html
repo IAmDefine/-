@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>实名认证</title>
+    <link rel="stylesheet" type="text/css" href="/css/weui.min.css">
+    <link rel="stylesheet" href="/css/lib/common.css">
+    <script type="text/javascript" src="/js/jquery-1.8.3.min.js"></script>
+    <style>
+        .weui-cells {
+            margin-top: 0;
+        }
+        
+        .weui-form-preview__item {
+            color: black;
+        }
+        
+        a img {
+            max-width: 100%;
+            border: 0;
+        }
+        
+        .weui-grid:before {
+            border-right: none;
+        }
+        
+        .weui-grid:after {
+            border-bottom: none;
+        }
+        
+        .weui-grids:before {
+            border-top: none;
+        }
+        
+        .weui-grids:after {
+            border-left: none;
+        }
+        .weui-grid img{
+            height:5.7rem;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        {if condition="$statrinfo['ifauth']==3"}
+        <div class="weui-msg">
+            <div class="weui-msg__icon-area"><i><img src="/imgs/icon-checking.png" alt=""></i></div>
+            <div class="weui-msg__text-area">
+                <h2 class="weui-msg__title">审核中</h2>
+            </div>
+            <div class="weui-cells zy-color">
+                <div class="weui-form-preview__bd">
+                    <div class="weui-form-preview__item">
+                        <label class="weui-form-preview__label" style="color:black;">温馨提示&nbsp;:</label>
+                        <span class="weui-form-preview__value" style="text-align:left;">24小时审核,请您耐心等待</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {elseif condition="$statrinfo['ifauth']==2"}
+        <div class="weui-msg">
+                <div class="weui-msg__icon-area"><i class="weui-icon-success weui-icon_msg"></i></div>
+                <div class="weui-msg__text-area">
+                    <h2 class="weui-msg__title">认证通过</h2>
+                </div>
+            </div>
+        {elseif condition="$statrinfo['ifauth']==4"}
+        <div class="weui-msg">
+                <div class="weui-msg__icon-area"><i class="weui-icon-warn weui-icon_msg"></i></div>
+                <div class="weui-msg__text-area">
+                    <h2 class="weui-msg__title">认证失败</h2>
+                </div>
+                <div class="weui-cells zy-color">
+                    <div class="weui-form-preview__bd">
+                        <div class="weui-form-preview__item">
+                            <label class="weui-form-preview__label" style="color:black;">失败原因&nbsp;:</label>
+                            <span class="weui-form-preview__value" style="text-align:left;color:red;">{$statrinfo['checkdesc']|default=''}</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        {/if}
+
+        <div class="weui-cells zy-color" style="border-bottom:0.8rem solid #f5f5f5;border-top:0.8rem solid #f5f5f5;">
+            <div class="weui-form-preview__bd">
+                <div class="weui-form-preview__item">
+                    <label class="weui-form-preview__label" style="color:black;">明星艺名&nbsp;:</label>
+                    <span class="weui-form-preview__value" style="text-align:left;">{$statrinfo['names']|default=''}</span>
+                </div>
+                <div class="weui-form-preview__item">
+                    <label class="weui-form-preview__label" style="color:black;">明星姓名&nbsp;:</label>
+                    <span class="weui-form-preview__value" style="text-align:left;">{$statrinfo['oldname']|default=''}</span>
+                </div>
+                <div class="weui-form-preview__item">
+                    <label class="weui-form-preview__label" style="color:black;">明星身份证号&nbsp;:</label>
+                    <span class="weui-form-preview__value" style="text-align:left;">{$statrinfo['idno']|default=''}</span>
+                </div>
+                <div class="weui-form-preview__item">
+                    <label class="weui-form-preview__label" style="color:black;">电子邮箱&nbsp;:</label>
+                    <span class="weui-form-preview__value" style="text-align:left;">{$statrinfo['email']|default=''}</span>
+                </div>
+                <div class="weui-form-preview__item">
+                    <label class="weui-form-preview__label" style="color:black;">认证时间&nbsp;:</label>
+                    <span class="weui-form-preview__value" style="text-align:left;">{$statrinfo['instime']|date="Y年m月d日",###}</span>
+                </div>
+            </div>
+        </div>
+        <div class="weui-grids" style="margin-bottom:1.5rem;">
+           
+            <a href="javascript:;" class="weui-grid" style="width:50%;">
+                <div class="">
+                    <img src="{$statrinfo['admcard']|default='/imgs/add_icon.png'}" alt="">
+                </div>
+                <p class="weui-grid__label">身份证正面</p>
+            </a>
+            <a href="javascript:;" class="weui-grid" style="width:50%;">
+                <div class="">
+                    <img src="{$statrinfo['reveside']|default='/imgs/add_icon.png'}" alt="">
+                </div>
+                <p class="weui-grid__label">身份证反面</p>
+            </a>
+            <a href="javascript:;" class="weui-grid" style="width:50%;">
+                <div class="">
+                    <img src="{$statrinfo['handid']|default='/imgs/add_icon.png'}" alt="">
+                </div>
+                <p class="weui-grid__label">手持身份证正面照</p>
+            </a>
+            {if condition="$statrinfo['credtype']==1"}
+            <a href="javascript:;" class="weui-grid" style="width:50%;">
+                <div class="">
+                    <img src="{$statrinfo['groupcode']|default='/imgs/add_icon.png'}" alt="">
+                </div>
+                <p class="weui-grid__label">组织机构代码证</p>
+            </a>
+            {/if}
+        </div>
+    </div>
+    {if condition="$statrinfo['ifauth']==4"}
+    <footer class="footer " eid="{$statrinfo['id']}">重新认证</footer>
+    {/if}
+    </div>
+</body>
+<script>
+    $(".footer").click(function(){
+        var id = $(this).attr('eid');
+        window.location.href='/index/userinfo/edit_auth?id='+ id +'&flg='+1;
+    })
+</script>
+</html>

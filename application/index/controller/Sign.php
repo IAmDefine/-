@@ -1,0 +1,466 @@
+<?php
+namespace app\index\controller;
+use think\Controller;
+use think\Session;
+use \think\Request;
+class Sign extends Base
+{
+    //合作代理
+    public function agency()
+    {
+      $request = Request::instance();
+      //1代理协议 2独家协议 3肖像独家
+      $ty = $request->only(['t'])['t'];
+      $sid = Session::get('sid');
+      if(!isset($sid)){
+        $this ->assign('ty',$ty);
+        return view();
+      }
+      //有sid查看用户是个人，工作室，经纪公司，认证通过可以跳转到相应合同
+      $data['id']=$sid;
+      $url = '/inter/star/startinfolook';
+      $starinfo = request_post($url,$data);
+      if($starinfo['data']['ifauth']==2){
+        //查看是否有签约
+        $pacrinfo = $this->con_datas();
+        if(!empty($pacrinfo)){
+          $this->redirect('/index/sign/pact_type');die;
+        }
+        //1个人 2工作室 3经纪公司        
+        $signtype = $starinfo['data']['signtype'];
+        if($signtype==1&&$ty==1){       //跳转到代理协议-个人
+          return view('/contract/per_contract');
+        }else if($signtype==1&&$ty==2){ //跳转到独家协议-个人
+          return view('/contract/per_exclusive');
+        }else if($signtype==1&&$ty==3){ //跳转到肖像独家-个人
+          return view('/contract/per_photo');
+        }else if($signtype==2&&$ty==1){ //跳转到代理协议-工作室
+          return view('/contract/work_agency');
+        }else if($signtype==2&&$ty==2){ //跳转到独家协议-工作室
+          return view('/contract/work_exclusive');
+        }else if($signtype==2&&$ty==3){ //跳转到肖像独家-工作室
+          return view('/contract/work_photo');
+        }else if($signtype==3&&$ty==1){ //跳转到代理协议-经纪公司
+          return view('/contract/fir_agency');
+        }else if($signtype==3&&$ty==2){ //跳转到独家协议-经纪公司
+          return view('/contract/fir_exclusive');
+        }else if($signtype==3&&$ty==3){ //跳转到肖像独家-经纪公司
+          return view('/contract/fir_photo');
+        }
+
+      }else if($starinfo['data']['ifauth']==3 || $starinfo['data']['ifauth']==4 ){
+        //跳转到认证结果页面
+        $this -> redirect('/index/sign/myinfo');
+      }
+    }
+
+    //我的页面
+    public function myinfo()
+    {
+        $wx_userinfo = Session::get('wx_userinfo');
+        $uid = $wx_userinfo['uid'];
+        $mobile = $wx_userinfo['mobile'];
+        $data['uid'] = $uid;
+        $url = '/inter/star/startinfolook';
+        $starinfo = request_post($url,$data);
+        if($starinfo['status']==3){
+          $this -> assign('wx_userinfo',$wx_userinfo);
+          return view();
+        }else{
+          if($starinfo['data']['credtype']==3){
+            $this->assign('statrinfo',$starinfo['data']);
+            $this -> assign('wx_userinfo',$wx_userinfo);
+            return view();
+          }else{
+            $this->assign('statrinfo',$starinfo['data']);
+            //dd($starinfo['data']);
+            $this -> assign('wx_userinfo',$wx_userinfo);
+            return view('/sign/work_auth_result'); //工作室认证情况页面
+          }
+           
+        }
+    }
+
+    //资料审核失败页面
+    public function defeated()
+    {
+          $request = Request::instance();
+          $id = $request->only(['sid'])['sid'];
+          $url ='/inter/star/startinfolook';
+          $data['id'] = $id;
+          $res = request_post($url,$data);
+          if($res['status']==1){
+              $s['id'] = $res['data']['id'];
+              $s['checkdesc'] = $res['data']['checkdesc'];
+              $this->assign('s',$s);
+              return view('msg');
+          }
+    }
+
+    //个人-代理合同
+    // public function per_contract()
+    // {
+    //   return view('/contract/per_contract');
+    // }
+    //工作室-代理合同
+    // public function work_agency()
+    // {
+    //   return view('/contract/work_agency');
+    // }
+
+    //我的签约
+    public function pact_type()
+    {
+      $pactinfo = $this -> con_datas();
+      $sinfo = $this ->selectinfo();
+      $ty = $pactinfo['types'];//合同类型 1独家协议 2肖像独家 3代理协议
+      $signtype = $sinfo['signtype'];
+      $this-> assign('pact',$pactinfo);
+      if($signtype==1&&$ty==3){       //跳转到代理协议-个人
+        return view('/pacttype/agency_type');
+      }else if($signtype==1&&$ty==1){ //跳转到独家协议-个人
+        return view('/pacttype/excpre_type');
+      }else if($signtype==1&&$ty==2){ //跳转到肖像独家-个人
+        return view('/pacttype/phopre_type');
+      }else if($signtype==2&&$ty==3){ //跳转到代理协议-工作室
+        return view('/pacttype/workage_type');
+      }else if($signtype==2&&$ty==1){ //跳转到独家协议-工作室
+        return view('/pacttype/workexc_type');
+      }else if($signtype==2&&$ty==2){ //跳转到肖像独家-工作室
+        return view('/pacttype/workpho_type');
+      }else if($signtype==3&&$ty==3){ //跳转到代理协议-经纪公司
+        return view('/pacttype/firage_type');
+      }else if($signtype==3&&$ty==1){ //跳转到独家协议-经纪公司
+        return view('/pacttype/firexc_type');
+      }else if($signtype==3&&$ty==2){ //跳转到肖像独家-经纪公司
+        return view('/pacttype/firpho_type');
+      }
+    }
+
+    //查看签约
+    public function con_datas()
+    {
+      $sid = Session::get('sid');
+      $url = '/inter/star/agreelist';
+      $data['sid'] = $sid;
+      $res = request_post($url,$data);
+      
+      if($res['status']==1){
+        return $res['data']['data'][0];
+      }else{
+        return 0;
+      }
+    }
+
+    //查看是否有签约数据（暂时保留）
+    public function con_data()
+    {
+      $sid = Session::get('sid');
+      $url = '/inter/star/agreelist';
+      $data['sid'] = $sid;
+      $res = request_post($url,$data);
+      if($res['status']==1){
+        return 1;
+      }else{
+        return 0;
+      }
+    }
+    //查看个人信息
+    private function selectinfo()
+    {
+      $sid = Session::get('sid');
+      $url = '/inter/star/startinfolook';
+      $data['id'] = $sid;
+      $res = request_post($url,$data);
+      return $res['data'];
+    }
+
+
+
+    //个人签约表单
+    public function sign_agency()
+    {
+      $types = $_GET['types'];
+      $sid = Session::get('sid');
+      $url = '/inter/star/startinfolook';
+      $data['id'] = $sid;
+      $res = request_post($url,$data);
+      if($res['status']==1){
+        $this->assign('types',$types);
+        $this->assign('sinfo',$res['data']);
+        return view();
+      }
+    }
+    //工作室签约表单
+    public function sign_work()
+    {
+      $types = $_GET['types'];
+      $sid = Session::get('sid');
+      $url = '/inter/star/startinfolook';
+      $data['id'] = $sid;
+      $res = request_post($url,$data);
+      if($res['status']==1){
+        $this->assign('types',$types);
+        $this->assign('sinfo',$res['data']);
+        return view();
+      }
+    }
+    //经纪公司签约表单
+    public function sign_fir()
+    {
+      $types = $_GET['types'];
+      $sid = Session::get('sid');
+      $url = '/inter/star/startinfolook';
+      $data['id'] = $sid;
+      $res = request_post($url,$data);
+      if($res['status']==1){
+        $this->assign('types',$types);
+        $this->assign('sinfo',$res['data']);
+        return view();
+      }
+    }
+
+    //审核失败修改信息页面
+    public function edit_pact()
+    {
+      $id = $_GET['id'];
+      $url = '/inter/star/lookagree';
+      $data['id'] = $id;
+      $res = request_post($url,$data);
+      if($res['status']==1){
+        $sinfo = $this->selectinfo();
+        $signtype = $sinfo['signtype'];
+        $this->assign('pinfo',$res['data']);
+        $this->assign('sinfo',$sinfo);
+        if($signtype==1){
+          return view('/edit/edit_per');
+        }else if($signtype==2){
+          return view('/edit/edit_work');
+        }else if($signtype==3){
+          return view('/edit/edit_fir');
+        }
+      }
+    }
+
+    //编辑合同资料
+    public function editsign()
+    {
+      $data = $_POST;
+      $data['states'] = 1;
+      $url = '/inter/star/auditagree';
+      $res = request_post($url,$data);
+      return $res;
+    }
+
+
+
+    //提交签约数据
+    public function signup()
+    {
+      $sid = Session::get('sid');
+      // $url = '/inter/star/startinfolook';
+      // $data['id'] = $sid;
+      // $res = request_post($url,$data);
+      //生成文签id
+      // if(!$res['data']['wquid']){
+      //   $mobile = Session::get('wx_userinfo')['mobile'];
+      //   $a = $this->createwquid($res['data'],$mobile,$sid);
+      //   if($a['status']!=1){
+      //     return $a;
+      //   }
+      // }
+      
+      $post_info = array_filter($_POST);
+      $post_info['sid'] = $sid;
+      $post_info['signfrom'] = 1;
+      $post_info['states'] = 1; //资料审核状态
+      $url = '/inter/star/addagree';
+      $res = request_post($url,$post_info);
+      if($res['status']==1){
+        return array('msg'=>'ok','status'=>'1');
+      }else{
+        return array('msg'=>'申请失败!','status'=>'3');
+      }
+    }
+
+    //合同详情页面
+    public function contractinfo()
+    {
+      $sid = !empty(Session::get('sid'))?Session::get('sid'):'';
+      if($sid){
+        $url ='/inter/star/agreelist';
+        $data['sid'] = $sid;
+        $res = request_post($url,$data);
+        // dd($res[status]);
+        if($res['status']==1){
+        $this->assign('contractinfo',$res['data']['data'][0]);
+        }
+      }else{
+        $this->assign('contractinfo','');
+      }
+      return view();
+    }
+
+    //开始签约
+    public function begin()
+    {
+      $sid = !empty(Session::get('sid'))?Session::get('sid'):'';
+      if($sid){
+        $url ='/inter/star/agreelist';
+        $data['sid'] = $sid;
+        $res = request_post($url,$data);
+        $cinfo = $res['data']['data'][0];
+       
+        $res = $this->selectinfo();
+        
+        $wquid = $res['wquid'];
+        $stamps = $res['stampid'];
+        //生成合同模板号
+        //$url = 'https://api.youxingku.cn/signpact/genpact.php';
+        $cnum = $this->createnum();
+       
+        
+        // $url = 'https://api.youxingku.cn/signpact/signing.php';
+        // $data['docid'] = $docid; 
+        // $data['uid'] = $wquid; 
+        // $data['stamps'] = $stamps; 
+        // get_api($url,$data);
+
+        // $url = 'https://api.youxingku.cn/signpact/downpact.php';
+        // $downpact['uid'] = $wquid;
+        // $downpact['docid'] = $docid;
+        // $res = get_api($url,$data);
+        // if($res['status']==1){
+        //   $fname = $res['data']['fname']; //合同文件
+        //   //更新数据库
+        //   $url = '/inter/star/auditagree';
+        //   $data1['id'] = $cinfo['id'];
+        //   $data1['states'] = '4';
+        //   $data1['docurl'] = $fname;
+        //   $res = request_post($url,$data1);
+        //   if($res['status']==1){
+        //     return 1;
+        //   }else{
+        //     return 0;
+        //   }
+        // }        
+      }
+    }
+
+    //签章页面
+    public function medal()
+    {
+      //查询个人信息
+      $myinfo = $this->selectinfo();
+      if(empty($myinfo['wquid'])){
+         $mobile = Session::get('wx_userinfo')['mobile'];
+         $sid = $myinfo['id'];
+         $a = $this->createwquid($myinfo,$mobile,$sid);
+         $myinfo = $this->selectinfo();
+      }
+      //下载章图片
+      $url = 'https://api.youxingku.cn/signpact/downstamp.php';
+      $data['uid'] = $myinfo['wquid'];
+      $data['stampid'] = $myinfo['stampid'];
+      $info = get_api($url,$data);
+      if($info['status']==1){
+        $png = $info['data']['fname'];
+        $this->assign('stamimg',$png);
+      }
+      
+      return view();
+    }
+
+    //创建文签uid和印章
+    private function createwquid($data,$mobile,$sid)
+    {
+      if($data['credtype']==3){
+        $url = 'https://api.youxingku.cn/signpact/regperson.php';
+         $wquid = 'u'.$mobile;
+        $data = array('uname'=>$data['oldname'],'uid'=>$wquid,'uphone'=>$mobile,'ucode'=>$data['idno']);
+        $res = get_api($url,$data);
+        if($res['status']==1){
+          //生成签名
+          $url = 'https://api.youxingku.cn/signpact/genpersonstamp.php';
+          $postdata['uid'] = $wquid;
+          $re = get_api($url,$data);
+          $stampid = $re['data']['stamp'];
+          $wqinfo = array('msg'=>'ok','status'=>'1');
+
+          //写入数据库
+          $url ='/inter/star/startinfoedit';
+          $edata['id'] = $sid;
+          $edata['wquid'] = $wquid;
+          $edata['stampid'] = $stampid;
+          $res = request_post($url,$edata);
+          if($res['status']==1){
+            return $wqinfo;
+          }else{
+            return array('msg'=>'生成公章失败！','status'=>'3');
+          }
+        }else{
+          return array('msg'=>$res['msg'],'status'=>3);
+        }
+
+      }else{
+
+        $url = 'https://api.youxingku.cn/signpact/regbiz.php';
+        $wquid = 'b'.$mobile;
+        $data = array('bizid'=>$wquid,'bizname'=>$data['bizname'],'bizcode'=>$data['compno'],'workname'=>$data['oldname'],'workphone'=>$mobile,'workid'=>$data['idno']);
+        $res =get_api($url,$data);
+          if($res['status']==1){
+          //生成签名
+          $url = 'https://api.youxingku.cn/signpact/genbizstamp.php';
+          $postdata['uid'] = $wquid;
+          $re =get_api($url,$postdata);
+          $stampid = $re['data']['stamp'];
+          $wqinfo = array('msg'=>'ok','status'=>'1');
+
+          //写入数据库
+          $url ='/inter/star/startinfoedit';
+          $edata['id'] = $sid;
+          $edata['wquid'] = $wquid;
+          $edata['stampid'] = $stampid;
+          $res = request_post($url,$edata);
+          if($res['status']==1){
+            return $wqinfo;
+          }else{
+            return array('msg'=>'生成公章失败！','status'=>'3');
+          }
+        }else{
+          return array('msg'=>$res['msg'],'status'=>3);
+        }
+      }
+
+    }
+
+    //生成合同号
+    private function createnum()
+    {
+      $pactinfo = $this -> con_datas();
+      $sinfo = $this ->selectinfo();
+      $ty = $pactinfo['types'];//合同类型 1独家协议 2肖像独家 3代理协议
+      $signtype = $sinfo['signtype'];
+      $this-> assign('pact',$pactinfo);
+      if($signtype==1&&$ty==3){       //代理协议-个人
+        return 1;
+      }else if($signtype==1&&$ty==1){ //独家协议-个人
+        return 2;
+      }else if($signtype==1&&$ty==2){ //肖像独家-个人
+        return 3;
+      }else if($signtype==2&&$ty==3){ //代理协议-工作室
+        return 4;
+      }else if($signtype==2&&$ty==1){ //独家协议-工作室
+        return 5;
+      }else if($signtype==2&&$ty==2){ //肖像独家-工作室
+        return 6;
+      }else if($signtype==3&&$ty==3){ //代理协议-经纪公司
+        return 7;
+      }else if($signtype==3&&$ty==1){ //独家协议-经纪公司
+        return 8;
+      }else if($signtype==3&&$ty==2){ //肖像独家-经纪公司
+        return 9;
+      }
+    }
+
+}

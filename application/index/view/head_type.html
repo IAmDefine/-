@@ -1,0 +1,68 @@
+<div class="tab">
+  <div class="text-size-26 tab-active">合同</div>
+  <!-- <a href="/index/sign/myinfo"> -->
+  <div class="text-size-26 identity">身份认证</div>
+  <!-- </a> -->
+</div>
+{notempty name="$pact"}
+{if condition="$pact['states']==1"}
+ <div class="status">
+    <div class="status-show">
+        <div class="status-show-icon status-icon-checking"></div>
+        <div class="status-show-text text-size-26 text-color-222 text-center">审核中</div>
+    </div>
+    <div class="status-cue text-size-26 text-color-444">
+        温馨提示：24小时审核，请耐心等待
+    </div>
+ </div>
+{elseif condition="$pact['states']==2"}
+ <div class="status">
+   <div class="status-show">
+       <div class="status-show-icon status-icon-success"></div>
+       <div class="status-show-text text-size-26 text-color-222 text-center">申请成功</div>
+   </div>
+ </div>
+{elseif condition="$pact['states']==3"}
+    <div class="status">
+      <div class="status-show">
+          <div class="status-show-icon status-icon-failed"></div>
+          <div class="status-show-text text-size-26 text-color-222 text-center">未通过</div>
+      </div>
+      <div class="status-cue text-size-26 text-color-444">
+          失败原因：<span class="text-color-red">信息有误！</span>
+      </div>
+    </div>
+{elseif condition="$pact['states']==5"}
+<div class="status">
+  <div class="status-show status-show-border">
+      <div class="status-show-icon status-icon-pencil"></div>
+      <div class="status-show-text text-size-26 text-color-222 text-center">审核中</div>
+  </div>
+  <div class="status-cue text-size-26 text-color-444">
+      温馨提示：24小时审核，请耐心等待
+  </div>
+</div>
+{elseif condition="$pact['states']==6"}
+<div class="status">
+  <div class="status-show status-show-border">
+      <div class="status-show-icon status-icon-pencil"></div>
+      <div class="status-show-text text-size-26 text-color-222 text-center">签约失败</div>
+  </div>
+  <div class="status-cue text-size-26 text-color-444">
+      失败原因：<span class="text-color-red">您的签字不清晰，请重新签字</span>
+  </div>
+</div>  
+{elseif condition="$pact['states']==4"}
+<div class="status">
+  <div class="status-show status-show-border">
+      <div class="status-show-icon status-icon-pencil"></div>
+      <div class="status-show-text text-size-26 text-color-222 text-center">签约成功</div>
+  </div>
+</div>    
+{/if}
+{/notempty}
+<script>
+    $('.identity').click(function(){
+        window.location.href='/index/sign/myinfo';
+    })
+</script>

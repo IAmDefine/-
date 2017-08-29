@@ -1,0 +1,18 @@
+{notempty name="$pact"}
+{if condition="$pact['states']==2"}
+<footer class="footer sign_up" style="position:fixed">确认签约</footer>
+{elseif condition="$pact['states']==3"}
+<footer class="footer reupinfo" eid="{$pact['id']}" style="position:fixed">重新申请</footer>
+{elseif condition="$pact['states']==6"}
+<footer class="footer" style="position:fixed">重新签约</footer>
+{/if}
+{/notempty}
+<script>
+  $('.sign_up').click(function(){
+     window.location.href='/index/sign/medal';
+  });
+  $(".reupinfo").click(function(){
+    var id = $(this).attr('eid');
+    window.location.href='/index/sign/edit_pact?id='+id;
+  })
+</script>
