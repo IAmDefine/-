@@ -29,7 +29,7 @@
           <div class="status-show-text text-size-26 text-color-222 text-center">未通过</div>
       </div>
       <div class="status-cue text-size-26 text-color-444">
-          失败原因：<span class="text-color-red">信息有误！</span>
+          失败原因：<span class="text-color-red">{$pact['authdesc']}</span>
       </div>
     </div>
 {elseif condition="$pact['states']==5"}
@@ -49,7 +49,7 @@
       <div class="status-show-text text-size-26 text-color-222 text-center">签约失败</div>
   </div>
   <div class="status-cue text-size-26 text-color-444">
-      失败原因：<span class="text-color-red">您的签字不清晰，请重新签字</span>
+      失败原因：<span class="text-color-red">{$pact['authdesc']}</span>
   </div>
 </div>  
 {elseif condition="$pact['states']==4"}

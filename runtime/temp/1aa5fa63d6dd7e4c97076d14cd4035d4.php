@@ -1,11 +1,11 @@
-<?php if (!defined('THINK_PATH')) exit(); /*a:1:{s:71:"E:\xampp\htdocs\wechat\public/../application/index\view\sign\medal.html";i:1503659702;}*/ ?>
+<?php if (!defined('THINK_PATH')) exit(); /*a:1:{s:71:"E:\xampp\htdocs\wechat\public/../application/index\view\sign\medal.html";i:1504004062;}*/ ?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Document</title>
+    <title>签约</title>
     <link rel="stylesheet" type="text/css" href="/css/lib/weui.min.css">
     <link rel="stylesheet" href="/css/lib/common.css">
     <script type="text/javascript" src="/js/jquery-1.8.3.min.js"></script>
@@ -84,11 +84,12 @@
 </head>
 
 <body>
+    <form>
     <div class="weui-cells" style="border-bottom:0.8rem solid #f5f5f5;border-top:0.8rem solid #f5f5f5;">
-        <div class="weui-cell">
+        <!-- <div class="weui-cell">
             <div class="weui-cell__hd"><label for="" class="weui-label">签署日期</label></div>
             <div class="weui-cell__bd">
-                <input class="weui-input" style="text-align: -webkit-right; " type="date" value="" />
+                <input class="weui-input" style="text-align: -webkit-right; " type="date" name="begindate" value="" />
             </div>
         </div>
         <div class="weui-cell ">
@@ -96,7 +97,7 @@
             <div class="weui-cell__bd ">
                 <input class="weui-input " style="text-align: -webkit-right; " type="text " placeholder="请输入签署地点 " />
             </div>
-        </div>
+        </div> -->
     </div>
     <div class="weui-flex">
         <div class="weui-flex__item" style="padding: 1.5rem;text-align:center; padding-bottom: 0.75rem;">
@@ -130,21 +131,32 @@
         </div>
     </footer>
     </div>
+</form>
 </body>
 <script>
     $(".sign").click(function(){
+        var loading = weui.loading('请稍后', {
+          className: 'custom-classname'
+        });
         $.ajax({
         url:"/index/sign/begin",
         type:"POST",
         data:'',
         dataType:'JSON',
         success:function (data) {
-            console.log(data);
-        //   if(data['status']==1){
-        //     window.location.href='/index/sign/pact_type'
-        //   }else{
-        //     weui.alert(data['msg']);
-        //   }
+          if(data['status']==1){
+            loading.hide(function() {
+               });
+                weui.toast('操作成功', {
+                  duration: 1500,
+                  className: 'custom-classname',
+                  callback: function(){
+                    window.location.href='/index/sign/pact_type'
+                 }
+            });
+          }else{
+            weui.alert(data['msg']);
+          }
         }
       });
     });

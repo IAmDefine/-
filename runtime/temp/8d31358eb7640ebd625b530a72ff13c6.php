@@ -1,4 +1,4 @@
-<?php if (!defined('THINK_PATH')) exit(); /*a:1:{s:74:"E:\xampp\htdocs\wechat\public/../application/index\view\sign\sign_fir.html";i:1503642528;}*/ ?>
+<?php if (!defined('THINK_PATH')) exit(); /*a:1:{s:74:"E:\xampp\htdocs\wechat\public/../application/index\view\sign\sign_fir.html";i:1503972015;}*/ ?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -26,13 +26,13 @@
                 <div class="weui-cell ">
                     <div class="weui-cell__hd "><label class="weui-label ">乙方公司全称</label></div>
                     <div class="weui-cell__bd ">
-                        <input class="weui-input " style="text-align: -webkit-right; " value="<?php echo (isset($sinfo['bizname'] ) && ($sinfo['bizname']  !== '')?$sinfo['bizname'] :''); ?>"  readonly="readonly"  />
+                        <input class="weui-input " style="text-align: -webkit-right; " name="partyb" value="<?php echo (isset($sinfo['bizname'] ) && ($sinfo['bizname']  !== '')?$sinfo['bizname'] :''); ?>"  readonly="readonly"  />
                     </div>
                 </div>
                 <div class="weui-cell ">
                     <div class="weui-cell__hd "><label class="weui-label ">法定代表人</label></div>
                     <div class="weui-cell__bd ">
-                        <input class="weui-input " style="text-align: -webkit-right; " type="text " placeholder="请输入投资人姓名" />
+                        <input class="weui-input " style="text-align: -webkit-right; " name="investor" type="text " placeholder="请输入投资人姓名" />
                     </div>
                 </div>
                 <div class="weui-cell ">

@@ -1,4 +1,4 @@
-<?php if (!defined('THINK_PATH')) exit(); /*a:1:{s:79:"E:\xampp\htdocs\wechat\public/../application/index\view\userinfo\work_auth.html";i:1503649190;}*/ ?>
+<?php if (!defined('THINK_PATH')) exit(); /*a:1:{s:79:"E:\xampp\htdocs\wechat\public/../application/index\view\userinfo\work_auth.html";i:1503971188;}*/ ?>
 <!DOCTYPE html>
 <html lang="en">
 

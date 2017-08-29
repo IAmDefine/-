@@ -1,4 +1,4 @@
-<?php if (!defined('THINK_PATH')) exit(); /*a:2:{s:81:"E:\xampp\htdocs\wechat\public/../application/index\view\pacttype\firexc_type.html";i:1503638702;s:70:"E:\xampp\htdocs\wechat\public/../application/index\view\head_type.html";i:1503638385;}*/ ?>
+<?php if (!defined('THINK_PATH')) exit(); /*a:3:{s:81:"E:\xampp\htdocs\wechat\public/../application/index\view\pacttype\firexc_type.html";i:1503648145;s:70:"E:\xampp\htdocs\wechat\public/../application/index\view\head_type.html";i:1503991122;s:71:"E:\xampp\htdocs\wechat\public/../application/index\view\pub_button.html";i:1503892599;}*/ ?>
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
@@ -40,7 +40,7 @@
           <div class="status-show-text text-size-26 text-color-222 text-center">未通过</div>
       </div>
       <div class="status-cue text-size-26 text-color-444">
-          失败原因：<span class="text-color-red">信息有误！</span>
+          失败原因：<span class="text-color-red"><?php echo $pact['authdesc']; ?></span>
       </div>
     </div>
 <?php elseif($pact['states']==5): ?>
@@ -60,7 +60,7 @@
       <div class="status-show-text text-size-26 text-color-222 text-center">签约失败</div>
   </div>
   <div class="status-cue text-size-26 text-color-444">
-      失败原因：<span class="text-color-red">您的签字不清晰，请重新签字</span>
+      失败原因：<span class="text-color-red"><?php echo $pact['authdesc']; ?></span>
   </div>
 </div>  
 <?php elseif($pact['states']==4): ?>
@@ -283,7 +283,22 @@
         </div>
     </div>
 </div>
-    <footer class="footer">重新签字</footer>
+<?php if(!(empty($pact) || (($pact instanceof \think\Collection || $pact instanceof \think\Paginator ) && $pact->isEmpty()))): if($pact['states']==2): ?>
+<footer class="footer sign_up" style="position:fixed">确认签约</footer>
+<?php elseif($pact['states']==3): ?>
+<footer class="footer reupinfo" eid="<?php echo $pact['id']; ?>" style="position:fixed">重新申请</footer>
+<?php elseif($pact['states']==6): ?>
+<footer class="footer" style="position:fixed">重新签约</footer>
+<?php endif; endif; ?>
+<script>
+  $('.sign_up').click(function(){
+     window.location.href='/index/sign/medal';
+  });
+  $(".reupinfo").click(function(){
+    var id = $(this).attr('eid');
+    window.location.href='/index/sign/edit_pact?id='+id;
+  })
+</script>
 </div>
 </body>
 </html>

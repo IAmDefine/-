@@ -258,18 +258,7 @@ class Sign extends Base
     public function signup()
     {
       $sid = Session::get('sid');
-      // $url = '/inter/star/startinfolook';
-      // $data['id'] = $sid;
-      // $res = request_post($url,$data);
-      //生成文签id
-      // if(!$res['data']['wquid']){
-      //   $mobile = Session::get('wx_userinfo')['mobile'];
-      //   $a = $this->createwquid($res['data'],$mobile,$sid);
-      //   if($a['status']!=1){
-      //     return $a;
-      //   }
-      // }
-      
+
       $post_info = array_filter($_POST);
       $post_info['sid'] = $sid;
       $post_info['signfrom'] = 1;
@@ -310,40 +299,53 @@ class Sign extends Base
         $data['sid'] = $sid;
         $res = request_post($url,$data);
         $cinfo = $res['data']['data'][0];
-       
+        $begindate = date("Y-m-d",time()); //签约时间
+        $endtime = date("Y-m-d", strtotime("+".$cinfo['coopnum'] ."months", strtotime($begindate)));//合同结束日期
         $res = $this->selectinfo();
-        
         $wquid = $res['wquid'];
-        $stamps = $res['stampid'];
-        //生成合同模板号
-        //$url = 'https://api.youxingku.cn/signpact/genpact.php';
-        $cnum = $this->createnum();
-       
-        
-        // $url = 'https://api.youxingku.cn/signpact/signing.php';
-        // $data['docid'] = $docid; 
-        // $data['uid'] = $wquid; 
-        // $data['stamps'] = $stamps; 
-        // get_api($url,$data);
+        $stampid = $res['stampid'];
 
-        // $url = 'https://api.youxingku.cn/signpact/downpact.php';
-        // $downpact['uid'] = $wquid;
-        // $downpact['docid'] = $docid;
-        // $res = get_api($url,$data);
-        // if($res['status']==1){
-        //   $fname = $res['data']['fname']; //合同文件
-        //   //更新数据库
-        //   $url = '/inter/star/auditagree';
-        //   $data1['id'] = $cinfo['id'];
-        //   $data1['states'] = '4';
-        //   $data1['docurl'] = $fname;
-        //   $res = request_post($url,$data1);
-        //   if($res['status']==1){
-        //     return 1;
-        //   }else{
-        //     return 0;
-        //   }
-        // }        
+        $url = 'https://api.youxingku.cn/signpact/genpact.php';
+       //生成合同模板号和所需变量
+       $wqdata = $this->createnum($cinfo,$begindate,$endtime);
+
+       $res = get_api($url,$wqdata);
+       if($res['status']==1){ 
+        //发起签约
+        $docid = $res['data']['docid'];
+        $pacname = '优星库合同'; //需要更换
+        $mytime = date('Y-m-d',(time()+864000));
+        $url = 'https://api.youxingku.cn/signpact/beginsign.php';
+        $begindata = array('docid'=>$docid,'docname'=>$pacname,'exptime'=>$mytime,'twouid'=>$wquid,'signkey'=>'乙 方');
+        $res = get_api($url,$begindata);
+        if($res['status']==1){
+          //开始签约
+					$url = 'https://api.youxingku.cn/signpact/signing.php';
+					$dodata = array('docid'=>$docid,'uid'=>$wquid,'stamps'=>$stampid);
+					$res = get_api($url,$dodata);
+					 if($res['status']==1){
+            //下载草稿合同
+            $url = 'https://api.youxingku.cn/signpact/downpact.php';
+            $down = array('uid'=>'1','docid'=>$docid);
+            $res = get_api($url,$down);
+            $caogao = $res['data']['fname'];
+           
+            $begindate = strtotime($begindate);
+            $endtime = strtotime($endtime);
+						$addhe = array('id'=>$cinfo['id'],'documentid'=>$docid,'drafturl'=>$caogao,'states'=>5,'begindate'=>$begindate,'diedate'=>$endtime);
+            //更新数据库
+           $url = '/inter/star/auditagree';
+           $res = request_post($url,$addhe);
+           return $res; //成功
+					 }else{
+             return $res;
+           }
+				}else{
+          return $res;
+        }
+       }else{
+         return $res;
+       }
       }
     }
 
@@ -435,32 +437,43 @@ class Sign extends Base
     }
 
     //生成合同号
-    private function createnum()
+    private function createnum($cinfo,$begindate,$endtime)
     {
-      $pactinfo = $this -> con_datas();
       $sinfo = $this ->selectinfo();
-      $ty = $pactinfo['types'];//合同类型 1独家协议 2肖像独家 3代理协议
+      $ty = $cinfo['types'];//合同类型 1独家协议 2肖像独家 3代理协议
       $signtype = $sinfo['signtype'];
-      $this-> assign('pact',$pactinfo);
       if($signtype==1&&$ty==3){       //代理协议-个人
-        return 1;
+        $vars = "[yifang]:".$cinfo['starname'].",[lianxidizhi]:".$cinfo['workaddr'].",[lianxidianhua]:".$cinfo['worktel'].",[dianziyouxiang]:".$cinfo['workemail'].",[yirenxingming]:".$cinfo['starname'].",[yiming]:".$cinfo['actorname'].",[zhengjianhaoma]:".$cinfo['cardnum'].",[hezuoqixian]:".$cinfo['coopnum'].",[hezuokaishiriqi]:".$begindate.",[hezuozhongzhiriqi]:".$endtime.",[jfwqsrbl]:".$cinfo['jfwqsrbl'].",[yfwqsrbl]:".$cinfo['yfwqsrbl'].",[jfsrbl]:".$cinfo['jfsrbl'].",[yfsrbl]:".$cinfo['yfsrbl'].",[jfsrbl2]:".$cinfo['jfsrbl2'].",[yfsrbl2]:".$cinfo['yfsrbl2'].",[yfkhmc]:".$cinfo['openname'].",[yfkhyh]:".$cinfo['openbank'].",[yfyhzh]:".$cinfo['openacct'].",[guoji]:".$cinfo['citizenship'].",[zhengjianleixing]:".$cinfo['cardtype'];
+        return $wqdata = array('temid'=>1002,'vars'=>$vars);
       }else if($signtype==1&&$ty==1){ //独家协议-个人
-        return 2;
+        $vars = "[yifang]:".$cinfo['starname'].",[lianxidizhi]:".$cinfo['workaddr'].",[lianxidianhua]:".$cinfo['worktel'].",[dianziyouxiang]:".$cinfo['workemail'].",[yirenxingming]:".$cinfo['starname'].",[yiming]:".$cinfo['actorname'].",[zhengjianhaoma]:".$cinfo['cardnum'].",[hezuoqixian]:".$cinfo['coopnum'].",[hezuokaishiriqi]:".$begindate.",[hezuozhongzhiriqi]:".$endtime.",[jfwqsrbl]:".$cinfo['jfwqsrbl'].",[yfwqsrbl]:".$cinfo['yfwqsrbl'].",[jfsrbl]:".$cinfo['jfsrbl'].",[yfsrbl]:".$cinfo['yfsrbl'].",[yfkhmc]:".$cinfo['openname'].",[yfkhyh]:".$cinfo['openbank'].",[yfyhzh]:".$cinfo['openacct'].",[guoji]:".$cinfo['citizenship'].",[zhengjianleixing]:".$cinfo['cardtype'];
+        return $wqdata = array('temid'=>1005,'vars'=>$vars);
       }else if($signtype==1&&$ty==2){ //肖像独家-个人
-        return 3;
+
+        $vars = "[yifang]:".$cinfo['starname'].",[lianxidizhi]:".$cinfo['workaddr'].",[lianxidianhua]:".$cinfo['worktel'].",[dianziyouxiang]:".$cinfo['workemail'].",[yirenxingming]:".$cinfo['starname'].",[yiming]:".$cinfo['actorname'].",[zhengjianhaoma]:".$cinfo['cardnum'].",[hezuoqixian]:".$cinfo['coopnum'].",[hezuokaishiriqi]:".$begindate.",[hezuozhongzhiriqi]:".$endtime.",[jfwqsrbl]:".$cinfo['jfwqsrbl'].",[yfwqsrbl]:".$cinfo['yfwqsrbl'].",[jfsrbl]:".$cinfo['jfsrbl'].",[yfsrbl]:".$cinfo['yfsrbl'].",[yfkhmc]:".$cinfo['openname'].",[yfkhyh]:".$cinfo['openbank'].",[yfyhzh]:".$cinfo['openacct'].",[guoji]:".$cinfo['citizenship'].",[zhengjianleixing]:".$cinfo['cardtype'].",[jfwqcdbl]:".$cinfo['jfwqcdbl'].",[yfwqcdbl]:".$cinfo['yfwqcdbl'].",[jfsrbl2]:".$cinfo['jfsrbl2'].",[yfsrbl2]:".$cinfo['yfsrbl2'];
+        return $wqdata = array('temid'=>1009,'vars'=>$vars);
+      
       }else if($signtype==2&&$ty==3){ //代理协议-工作室
-        return 4;
+        $vars = "[yifang]:".$cinfo['partyb'].",[touziren]:".$cinfo['investor'].",[lianxidizhi]:".$cinfo['workaddr'].",[lianxiren]:".$cinfo['workman'].",[lianxidianhua]:".$cinfo['worktel'].",[dianziyouxiang]:".$cinfo['workemail'].",[yirenxingming]:".$cinfo['starname'].",[yiming]:".$cinfo['actorname'].",[zhengjianhaoma]:".$cinfo['cardnum'].",[hezuoqixian]:".$cinfo['coopnum'].",[hezuokaishiriqi]:".$begindate.",[hezuozhongzhiriqi]:".$endtime.",[jfwqsrbl]:".$cinfo['jfwqsrbl'].",[yfwqsrbl]:".$cinfo['yfwqsrbl'].",[jfsrbl]:".$cinfo['jfsrbl'].",[yfsrbl]:".$cinfo['yfsrbl'].",[jfsrbl2]:".$cinfo['jfsrbl2'].",[yfsrbl2]:".$cinfo['yfsrbl2'].",[yfkhmc]:".$cinfo['openname'].",[yfkhyh]:".$cinfo['openbank'].",[yfyhzh]:".$cinfo['openacct'];
+        return $wqdata = array('temid'=>1003,'vars'=>$vars);
       }else if($signtype==2&&$ty==1){ //独家协议-工作室
-        return 5;
+        $vars = "[yifang]:".$cinfo['partyb'].",[touziren]:".$cinfo['investor'].",[lianxidizhi]:".$cinfo['workaddr'].",[lianxiren]:".$cinfo['workman'].",[lianxidianhua]:".$cinfo['worktel'].",[dianziyouxiang]:".$cinfo['workemail'].",[yirenxingming]:".$cinfo['starname'].",[yiming]:".$cinfo['actorname'].",[zhengjianhaoma]:".$cinfo['cardnum'].",[hezuoqixian]:".$cinfo['coopnum'].",[hezuokaishiriqi]:".$begindate.",[hezuozhongzhiriqi]:".$endtime.",[jfwqsrbl]:".$cinfo['jfwqsrbl'].",[yfwqsrbl]:".$cinfo['yfwqsrbl'].",[jfsrbl]:".$cinfo['jfsrbl'].",[yfsrbl]:".$cinfo['yfsrbl'].",[yfkhmc]:".$cinfo['openname'].",[yfkhyh]:".$cinfo['openbank'].",[yfyhzh]:".$cinfo['openacct'].",[guoji]:".$cinfo['citizenship'].",[jiesuanriqi]:10";
+        return $wqdata = array('temid'=>1006,'vars'=>$vars);
       }else if($signtype==2&&$ty==2){ //肖像独家-工作室
-        return 6;
+        $vars = "[yifang]:".$cinfo['partyb'].",[touziren]:".$cinfo['investor'].",[lianxidizhi]:".$cinfo['workaddr'].",[lianxiren]:".$cinfo['workman'].",[lianxidianhua]:".$cinfo['worktel'].",[dianziyouxiang]:".$cinfo['workemail'].",[yirenxingming]:".$cinfo['starname'].",[zhengjianhaoma]:".$cinfo['cardnum'].",[hezuoqixian]:".$cinfo['coopnum'].",[hezuokaishiriqi]:".$begindate.",[hezuozhongzhiriqi]:".$endtime.",[jfwqsrbl]:".$cinfo['jfwqsrbl'].",[yfwqsrbl]:".$cinfo['yfwqsrbl'].",[jfsrbl]:".$cinfo['jfsrbl'].",[yfsrbl]:".$cinfo['yfsrbl'].",[yfkhmc]:".$cinfo['openname'].",[yfkhyh]:".$cinfo['openbank'].",[yfyhzh]:".$cinfo['openacct'].",[guoji]:".$cinfo['citizenship'].",[jfwqcdbl]:".$cinfo['jfwqcdbl'].",[yfwqcdbl]:".$cinfo['yfwqcdbl'];
+        return $wqdata = array('temid'=>1010,'vars'=>$vars);
       }else if($signtype==3&&$ty==3){ //代理协议-经纪公司
-        return 7;
+        $vars = "[yifang]:".$cinfo['partyb'].",[touziren]:".$cinfo['investor'].",[lianxidizhi]:".$cinfo['workaddr'].",[lianxiren]:".$cinfo['workman'].",[lianxidianhua]:".$cinfo['worktel'].",[dianziyouxiang]:".$cinfo['workemail'].",[hezuoqixian]:".$cinfo['coopnum'].",[hezuokaishiriqi]:".$begindate.",[hezuozhongzhiriqi]:".$endtime.",[jfwqsrbl]:".$cinfo['jfwqsrbl'].",[yfwqsrbl]:".$cinfo['yfwqsrbl'].",[jfsrbl]:".$cinfo['jfsrbl'].",[yfsrbl]:".$cinfo['yfsrbl'].",[yfkhmc]:".$cinfo['openname'].",[yfkhyh]:".$cinfo['openbank'].",[yfyhzh]:".$cinfo['openacct'].",[jfsrbl2]:".$cinfo['jfsrbl2'].",[yfsrbl2]:".$cinfo['yfsrbl2'];
+        return $wqdata = array('temid'=>1004,'vars'=>$vars);
       }else if($signtype==3&&$ty==1){ //独家协议-经纪公司
-        return 8;
+
+        $vars = "[yifang]:".$cinfo['partyb'].",[lianxidizhi]:".$cinfo['workaddr'].",[lianxiren]:".$cinfo['workman'].",[lianxidianhua]:".$cinfo['worktel'].",[dianziyouxiang]:".$cinfo['workemail'].",[hezuoqixian]:".$cinfo['coopnum'].",[hezuokaishiriqi]:".$begindate.",[hezuozhongzhiriqi]:".$endtime.",[jfwqsrbl]:".$cinfo['jfwqsrbl'].",[yfwqsrbl]:".$cinfo['yfwqsrbl'].",[jfsrbl]:".$cinfo['jfsrbl'].",[yfsrbl]:".$cinfo['yfsrbl'].",[yfkhmc]:".$cinfo['openname'].",[yfkhyh]:".$cinfo['openbank'].",[yfyhzh]:".$cinfo['openacct'];
+        return $wqdata = array('temid'=>1007,'vars'=>$vars);
+
+
       }else if($signtype==3&&$ty==2){ //肖像独家-经纪公司
-        return 9;
+        $vars = "[yifang]:".$cinfo['partyb'].",[touziren]:".$cinfo['investor'].",[lianxidizhi]:".$cinfo['workaddr'].",[lianxiren]:".$cinfo['workman'].",[lianxidianhua]:".$cinfo['worktel'].",[dianziyouxiang]:".$cinfo['workemail'].",[hezuoqixian]:".$cinfo['coopnum'].",[hezuokaishiriqi]:".$begindate.",[hezuozhongzhiriqi]:".$endtime.",[jfwqsrbl]:".$cinfo['jfwqsrbl'].",[yfwqsrbl]:".$cinfo['yfwqsrbl'].",[jfsrbl]:".$cinfo['jfsrbl'].",[yfsrbl]:".$cinfo['yfsrbl'].",[yfkhmc]:".$cinfo['openname'].",[yfkhyh]:".$cinfo['openbank'].",[yfyhzh]:".$cinfo['openacct'].",[jfsrbl2]:".$cinfo['jfsrbl2'].",[yfsrbl2]:".$cinfo['yfsrbl2'].",[jfwqcdbl]:".$cinfo['jfwqcdbl'].",[yfwqcdbl]:".$cinfo['yfwqcdbl'];
+        return $wqdata = array('temid'=>1011,'vars'=>$vars);
       }
     }
-
 }

@@ -1,4 +1,4 @@
-<?php if (!defined('THINK_PATH')) exit(); /*a:1:{s:77:"E:\xampp\htdocs\wechat\public/../application/index\view\sign\sign_agency.html";i:1503908974;}*/ ?>
+<?php if (!defined('THINK_PATH')) exit(); /*a:1:{s:77:"E:\xampp\htdocs\wechat\public/../application/index\view\sign\sign_agency.html";i:1503971958;}*/ ?>
 <!DOCTYPE html>
 <html>
   <head>
@@ -15,13 +15,13 @@
         <div class="weui-cell">
             <div class="weui-cell__hd"><label class="weui-label">乙方姓名：</label></div>
             <div class="weui-cell__bd">
-                <input class="weui-input" type="text" value="<?php echo (isset($sinfo['oldname'] ) && ($sinfo['oldname']  !== '')?$sinfo['oldname'] :''); ?>" readonly="readonly"/>
+                <input class="weui-input" type="text" value="<?php echo (isset($sinfo['oldname'] ) && ($sinfo['oldname']  !== '')?$sinfo['oldname'] :''); ?>" name="starname" readonly="readonly"/>
             </div>
         </div>
         <div class="weui-cell">
                 <div class="weui-cell__hd"><label class="weui-label">艺名：</label></div>
                 <div class="weui-cell__bd">
-                    <input class="weui-input" value="<?php echo $sinfo['names']; ?>"  readonly="readonly"/>
+                    <input class="weui-input" value="<?php echo $sinfo['names']; ?>" name="actorname"  readonly="readonly"/>
                 </div>
             </div>
          <div class="weui-cell">
@@ -75,7 +75,7 @@
         <a class="weui-cell weui-cell_access country" href="javascript:;">
           <div class="weui-cell__bd">
               <p id="country">国籍：中国</p>
-              <input type="hidden" name="country" id="con" value="1">
+              <input type="hidden" name="citizenship" id="con" value="中国">
           </div>
           <div class="weui-cell__ft">
           </div>
@@ -134,24 +134,24 @@
     var items = [
          {
              label: '中国',
-             value: 1
+             value: '中国'
 
          },
          {
              label: '韩国',
-             value: 2
+             value: '韩国'
          },
          {
              label: '日本',
-             value: 3
+             value: '日本'
          },
          {
              label: '新加坡',
-             value: 4
+             value: '新加坡'
          },
          {
              label: '美国',
-             value: 5
+             value: '美国'
          },
 
      ];

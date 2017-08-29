@@ -1,4 +1,4 @@
-<?php if (!defined('THINK_PATH')) exit(); /*a:3:{s:81:"E:\xampp\htdocs\wechat\public/../application/index\view\pacttype\phopre_type.html";i:1503648158;s:70:"E:\xampp\htdocs\wechat\public/../application/index\view\head_type.html";i:1503638385;s:71:"E:\xampp\htdocs\wechat\public/../application/index\view\pub_button.html";i:1503892599;}*/ ?>
+<?php if (!defined('THINK_PATH')) exit(); /*a:3:{s:81:"E:\xampp\htdocs\wechat\public/../application/index\view\pacttype\phopre_type.html";i:1503648158;s:70:"E:\xampp\htdocs\wechat\public/../application/index\view\head_type.html";i:1503991122;s:71:"E:\xampp\htdocs\wechat\public/../application/index\view\pub_button.html";i:1503892599;}*/ ?>
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
@@ -40,7 +40,7 @@
           <div class="status-show-text text-size-26 text-color-222 text-center">未通过</div>
       </div>
       <div class="status-cue text-size-26 text-color-444">
-          失败原因：<span class="text-color-red">信息有误！</span>
+          失败原因：<span class="text-color-red"><?php echo $pact['authdesc']; ?></span>
       </div>
     </div>
 <?php elseif($pact['states']==5): ?>
@@ -60,7 +60,7 @@
       <div class="status-show-text text-size-26 text-color-222 text-center">签约失败</div>
   </div>
   <div class="status-cue text-size-26 text-color-444">
-      失败原因：<span class="text-color-red">您的签字不清晰，请重新签字</span>
+      失败原因：<span class="text-color-red"><?php echo $pact['authdesc']; ?></span>
   </div>
 </div>  
 <?php elseif($pact['states']==4): ?>

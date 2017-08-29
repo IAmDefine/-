@@ -1,4 +1,4 @@
-<?php if (!defined('THINK_PATH')) exit(); /*a:1:{s:75:"E:\xampp\htdocs\wechat\public/../application/index\view\sign\sign_work.html";i:1503909626;}*/ ?>
+<?php if (!defined('THINK_PATH')) exit(); /*a:1:{s:75:"E:\xampp\htdocs\wechat\public/../application/index\view\sign\sign_work.html";i:1503971514;}*/ ?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -34,7 +34,7 @@
                 <div class="weui-cell ">
                     <div class="weui-cell__hd "><label class="weui-label ">工作室名称</label></div>
                     <div class="weui-cell__bd ">
-                        <input class="weui-input " style="text-align: -webkit-right;" value="<?php echo (isset($sinfo['bizname'] ) && ($sinfo['bizname']  !== '')?$sinfo['bizname'] :''); ?>"  readonly="readonly" />
+                        <input class="weui-input " style="text-align: -webkit-right;" value="<?php echo (isset($sinfo['bizname'] ) && ($sinfo['bizname']  !== '')?$sinfo['bizname'] :''); ?>" name="partyb" readonly="readonly" />
                     </div>
                 </div>
                 <div class="weui-cell ">
@@ -81,13 +81,13 @@
                 <div class="weui-cell ">
                     <div class="weui-cell__hd "><label class="weui-label ">乙方姓名</label></div>
                     <div class="weui-cell__bd ">
-                        <input class="weui-input " style="text-align: -webkit-right; " value="<?php echo (isset($sinfo['oldname'] ) && ($sinfo['oldname']  !== '')?$sinfo['oldname'] :''); ?>" type="text " placeholder="请输入真实姓名 "  readonly="readonly" />
+                        <input class="weui-input " style="text-align: -webkit-right; " name="starname" value="<?php echo (isset($sinfo['oldname'] ) && ($sinfo['oldname']  !== '')?$sinfo['oldname'] :''); ?>" type="text " placeholder="请输入真实姓名 "  readonly="readonly" />
                     </div>
                 </div>
                 <div class="weui-cell ">
                     <div class="weui-cell__hd "><label class="weui-label ">乙方艺名</label></div>
                     <div class="weui-cell__bd ">
-                        <input class="weui-input " style="text-align: -webkit-right; " value="<?php echo (isset($sinfo['names'] ) && ($sinfo['names']  !== '')?$sinfo['names'] :''); ?>" type="text " placeholder="请输入艺名"  readonly="readonly"/>
+                        <input class="weui-input " style="text-align: -webkit-right; " value="<?php echo (isset($sinfo['names'] ) && ($sinfo['names']  !== '')?$sinfo['names'] :''); ?>" name="actorname" type="text " placeholder="请输入艺名"  readonly="readonly"/>
                     </div>
                 </div>
                
