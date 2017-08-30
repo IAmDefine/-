@@ -8,7 +8,8 @@
     <link rel="stylesheet" type="text/css" href="/css/lib/weui.min.css">
     <link rel="stylesheet" href="/css/lib/common.css">
     <script type="text/javascript" src="/js/jquery-1.8.3.min.js"></script>
-	<script type="text/javascript" src="/js/weui.min.js"></script>
+    <script type="text/javascript" src="/js/weui.min.js"></script>
+    <script type="text/javascript" src="/js/lib/plupload-2.1.2/js/plupload.full.min.js"></script>
     <style>
         .weui-cells {
             margin-top: 0;
@@ -83,7 +84,7 @@
 </head>
 
 <body>
-    <form>
+
     <div class="weui-cells" style="border-bottom:0.8rem solid #f5f5f5;border-top:0.8rem solid #f5f5f5;">
         <!-- <div class="weui-cell">
             <div class="weui-cell__hd"><label for="" class="weui-label">签署日期</label></div>
@@ -101,26 +102,27 @@
     <div class="weui-flex">
         <div class="weui-flex__item" style="padding: 1.5rem;text-align:center; padding-bottom: 0.75rem;">
          <img src="{$stamimg}" alt="" style="width:100%;">
-         <div class="chioce-btn">选择</div>
+         <!-- <div class="chioce-btn">选择</div> -->
         </div>
         
         <div class="weui-flex__item"  style="padding: 1.5rem;text-align:center; padding-bottom: 0.75rem;">
-            <img src="{$stamimg}" alt="" style="width:100%;">
-            <div class="chioce-btn">选择</div>
+            <!-- <img src="{$stamimg}" alt="" style="width:100%;"> -->
+            <!-- <div class="chioce-btn">选择</div> -->
         </div>
     </div>
     <div class="weui-grids" style=" background-color:#f5f5f5;position:absolute;width:100%;">
         <div class="weui-cell ">
             <div class="weui-cell__hd "><label class="weui-label " style="width:100%;color:#9A9A9A;font-size:0.8rem;">温馨提示&nbsp;:本平台生成的公司章及个人签名,经过第三方公正,依法有效.</label></div>
         </div>
-        <a href="javascript:;" class="weui-grid" style="width:100%;text-align: center;">
+        <a href="javascript:;" class="weui-grid" style="width:100%;text-align: center;" id="selectfiles">
             <div class="weui-msg__icon-area"><i><img src="/imgs/icon-signature.png" alt=""></i></div>
             <p class="weui-grid__label">上传签章</p>
-            <p style="color:red;float: giht;float: right;font-size: 0.7rem;margin-bottom: 0.5rem;    bottom: .9rem;"><i><img src="/imgs/icon-eye.png" alt=""></i>&nbsp;&nbsp;<u>查看合同</u></p>
         </a>
+        <p style="color:red;float: giht;float: right;font-size: 0.7rem;margin-bottom: 0.5rem;    bottom: .9rem;"><i><img src="/imgs/icon-eye.png" alt=""></i>&nbsp;&nbsp;<u><a href="/index/sign/pact_type">查看合同</a></u></p>
     </div>
+    
     </div>
-
+ 
     <footer class="foot ">
         <div class="one-a weui-grid" style="text-align: center; width:50%;background-color:#ffffff;padding:0;border-top:0.1rem solid #f5f5f5;">
             合同附件
@@ -130,8 +132,8 @@
         </div>
     </footer>
     </div>
-</form>
 </body>
+
 <script>
     $(".sign").click(function(){
         var loading = weui.loading('请稍后', {
@@ -159,5 +161,47 @@
         }
       });
     });
+</script>
+<script>
+    accessid = '';
+  accesskey = '';
+  host = '';
+  policyBase64 = '';
+  signature = '';
+  callbackbody = '';
+  filename = '';
+  key = '';
+  expire = 0;
+  g_object_name = '';
+  g_object_name_type = '';
+  now = timestamp = Date.parse(new Date()) / 1000;
+  fname = '';
+  whichf = 1;
+
+  //实例化一个plupload上传对象
+  var uploader = new plupload.Uploader({
+      browse_button: ['selectfiles'], //触发文件选择对话框的按钮，为那个元素id
+      url: 'api.youxingku.cc/signpact/uploadstamp.php', //服务器端的上传页面地址
+      flash_swf_url: 'js/Moxie.swf', //swf文件，当需要使用swf方式进行上传时需要配置该参数
+      silverlight_xap_url: 'js/Moxie.xap', //silverlight文件，当需要使用silverlight方式进行上传时需要配置该参数
+      multipart_params:{yxkuid:'8798'}
+  });
+
+  uploader.init();
+  uploader.bind('FilesAdded', function (uploader, files) {
+      uploader.start();
+      loading = weui.loading('请稍后', {
+          className: 'custom-classname'
+        });
+  });
+
+  uploader.bind('FileUploaded', function (uploader, file, responseObject) {
+   console.log(responseObject)
+
+  });
+
+
+
+
 </script>
 </html>

@@ -1,4 +1,4 @@
-<?php if (!defined('THINK_PATH')) exit(); /*a:1:{s:79:"E:\xampp\htdocs\wechat\public/../application/index\view\userinfo\work_auth.html";i:1503971188;}*/ ?>
+<?php if (!defined('THINK_PATH')) exit(); /*a:1:{s:79:"E:\xampp\htdocs\wechat\public/../application/index\view\userinfo\work_auth.html";i:1504086680;}*/ ?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -43,6 +43,30 @@
         .footer{
             z-index: 10;
         }
+        .weui-uploader__bd{overflow: hidden;
+            margin: 0;
+        }
+
+        .weui-uploader{
+          border-bottom: 10px solid #EBEBEB;
+          padding-bottom: 10px
+        }
+        .photo_con{
+            width: 48%;
+            height: 160px;
+            float: left;
+            margin-right:5px;
+        }
+        .photo_con > span{
+            margin-left:20px;
+        }
+        img{
+        width: 100%;
+        height: 100%;
+    }
+    .show{
+        /* display: none; */
+    }
     </style>
 </head>
 
@@ -53,8 +77,8 @@
         <div class="weui-cells">
                 <a class="weui-cell weui-cell_access type" href="javascript:;">
                     <div class="weui-cell__bd">
-                        <p id="types">证件类型：多证合一</p>
-                        <input type="hidden" name="credtype" id="credtype" value="2">
+                        <p id="types">证件类型：普通证件</p>
+                        <input type="hidden" name="credtype" id="credtype" value="1">
                     </div>
                     <div class="weui-cell__ft">
                     </div>
@@ -113,50 +137,55 @@
                 </div>
             </div>
         </div>
-        <div class="weui-grids" style="margin-bottom:1.5rem;">
-            <a href="javascript:;" class="weui-grid" style="width:50%;height:180px" onclick="setvar(1)" id="selectfiles1">
-                <div class="">
-                    <img src="/imgs/add_icon.png" id="img1" alt="">
-                    <input type="hidden" name="tradcert" id="imgurl1">
+       
+        <div class="weui-uploader" style="margin-left:11px;margin-top:20px">
+                <div class="weui-uploader__bd">
+                  <div class="photo_con" onclick="setvar(1)">
+                    <div class="weui-uploader__input-box" style="width:100%;height:114px" id="selectfiles" >
+                       <img src="" id="img1">
+                       <input type="hidden" name="tradcert" id="imgurl1">
+                    </div>
+                    <span style="margin-left:40px">营业执照</span>
+                  </div>
+                  <div class="photo_con" onclick="setvar(2)">
+                    <div class="weui-uploader__input-box" style="width:100%;height:114px" id="selectfiles1" >
+                        <img src="" id="img2">
+                        <input type="hidden" name="entrus" id="imgurl2">
+                    </div>
+                    <span style="margin-left:40px">企业委托书</span>
+                 </div>
+                 <div class="photo_con" onclick="setvar(3)">
+                    <div class="weui-uploader__input-box" style="width:100%;height:114px" id="selectfiles2">
+                        <img src="" id="img3">
+                        <input type="hidden" name="admcard" id="imgurl3">
+                    </div>
+                    <span>身份证正面</span>
                 </div>
-                <p class="weui-grid__label">营业执照</p>
-            </a>
-            <a href="javascript:;" class="weui-grid" style="width:50%;" onclick="setvar(2)" id="selectfiles2">
-                <div class="">
-                    <img src="/imgs/add_icon.png" alt="" id="img2">
-                    <input type="hidden" name="entrus" id="imgurl2">
+                <div class="photo_con" onclick="setvar(4)">
+                        <div class="weui-uploader__input-box" style="width:100%;height:114px" id="selectfiles3">
+                            <img src="" id="img4">
+                            <input type="hidden" name="reveside" id="imgurl4">
+                        </div>
+                        <span>身份证反面</span>
+                    </div>  
+                <div class="photo_con" onclick="setvar(5)">
+                        <div class="weui-uploader__input-box" style="width:100%;height:114px" id="selectfiles4">
+                            <img src="" id="img5">
+                            <input type="hidden" name="handid" id="imgurl5">
+                        </div>
+                        <span>手持身份证正面照</span>
+                    </div>  
+                
+                <div class="photo_con show" onclick="setvar(6)">
+                        <div class="weui-uploader__input-box" style="width:100%;height:114px" id="selectfiles5">
+                            <img src="" id="img6">
+                            <input type="hidden" name="groupcode" id="imgurl6">
+                        </div>
+                        <span>组织机构代码证</span>
+                </div> 
+           
                 </div>
-                <p class="weui-grid__label">企业委托书</p>
-            </a>
-            <a href="javascript:;" class="weui-grid" style="width:50%;" onclick="setvar(3)" id="selectfiles3">
-                <div class="">
-                    <img src="/imgs/add_icon.png" alt="" id="img3">
-                    <input type="hidden" name="admcard" id="imgurl3">
-                </div>
-                <p class="weui-grid__label">身份证正面</p>
-            </a>
-            <a href="javascript:;" class="weui-grid" style="width:50%;" onclick="setvar(4)" id="selectfiles4">
-                <div class="">
-                    <img src="/imgs/add_icon.png" alt="" id="img4">
-                    <input type="hidden" name="reveside" id="imgurl4">
-                </div>
-                <p class="weui-grid__label">身份证反面</p>
-            </a>
-            <a href="javascript:;" class="weui-grid" style="width:50%;" onclick="setvar(5)" id="selectfiles5">
-                <div class="">
-                    <img src="/imgs/add_icon.png" alt="" id="img5">
-                    <input type="hidden" name="handid" id="imgurl5">
-                </div>
-                <p class="weui-grid__label">手持身份证正面照</p>
-            </a>
-            <a href="javascript:;" class="weui-grid show" style="width:50%;display:none">
-                <div class="" onclick="setvar(6)" id="selectfiles6">
-                    <img src="/imgs/add_icon.png" alt="" id="img6">
-                    <input type="hidden" name="groupcode" id="imgurl6">
-                </div>
-                <p class="weui-grid__label">组织机构代码证</p>
-            </a>
-        </div>
+            </div>
     </div>
     <input type="hidden" name="signtype" value="<?php echo (isset($signtype) && ($signtype !== '')?$signtype:''); ?>">
     </form>
@@ -176,7 +205,7 @@
           }
       ], {
           className: 'custom-classname',
-          defaultValue: [1],
+          defaultValue: [0],
           onConfirm: function (result) {
               $("#types").text('证件类型：'+result[0]['label']);
               var types = result[0]['value'];
@@ -187,7 +216,7 @@
               }else if(types==2){
                 $('.show').css('display','none');
                 $("#imgurl6").val('');
-                $("#img6").attr('src','/imgs/add_icon.png');
+                $("#img6").attr('src','');
               }
           },
           id: 'singleLinePicker'
@@ -217,7 +246,7 @@
     
       //实例化一个plupload上传对象
       var uploader = new plupload.Uploader({
-          browse_button: ['selectfiles1', 'selectfiles2', 'selectfiles3','selectfiles4','selectfiles5','selectfiles6',], //触发文件选择对话框的按钮，为那个元素id
+          browse_button: ['selectfiles', 'selectfiles1', 'selectfiles2','selectfiles3','selectfiles4','selectfiles5'], //触发文件选择对话框的按钮，为那个元素id
           url: 'upload.php', //服务器端的上传页面地址
           flash_swf_url: 'js/Moxie.swf', //swf文件，当需要使用swf方式进行上传时需要配置该参数
           silverlight_xap_url: 'js/Moxie.xap' //silverlight文件，当需要使用silverlight方式进行上传时需要配置该参数
@@ -326,6 +355,38 @@
       $("#up").click(function(){
         var info = $("#form").serialize()
         info = decodeURIComponent(info,true);
+        var v = via(info);
+        if(v==11){
+            weui.alert('请完善信息！');
+            return;
+        }else if(v==2){
+            weui.alert('请输入正确的身份证号码！');
+            return;
+        }else if(v==3){
+            weui.alert('请输入正确的邮箱！');
+            return;
+        }else if(v==4){
+            weui.alert('请输入公司名称！');
+            return;
+        }else if(v==5){
+            weui.alert('请输入企业注册号！');
+            return;
+        }else if(v==6 || v==7){
+            weui.alert('请输入名字！');
+            return;
+        }else if(v==8){
+            weui.alert('请上传营业执照！');
+            return;
+        }else if(v==9){
+            weui.alert('请上传企业委托书！');
+            return;
+        }else if(v==10){
+            weui.alert('请上传身份证！');
+            return;
+        }else if(v==12){
+            weui.alert('请上传组织结构代码证！');
+            return;
+        }
         var loading = weui.loading('请稍后', {
           className: 'custom-classname'
         });
@@ -349,5 +410,56 @@
            }
        });
     })
+    function via(info){
+        var card = $("input[name='idno']").val(); 
+        var email = $("input[name='email']").val(); 
+        var bizname = $("input[name='bizname']").val(); 
+        var compno = $("input[name='compno']").val(); 
+        var names = $("input[name='names']").val(); 
+        var names = $("input[name='oldname']").val(); 
+        var tradcert = $("input[name='tradcert']").val(); 
+        var entrus = $("input[name='entrus']").val(); 
+        var admcard = $("input[name='admcard']").val(); 
+        var reveside = $("input[name='reveside']").val(); 
+        var handid = $("input[name='handid']").val(); 
+        var credtype = $("input[name='credtype']").val(); 
+        var groupcode = $("input[name='groupcode']").val(); 
+        var reg = /(^\d{15}$)|(^\d{18}$)|(^\d{17}(\d|X|x)$)/;
+        var em = /^[a-z0-9]+([._\\-]*[a-z0-9])*@([a-z0-9]+[-a-z0-9]*[a-z0-9]+.){1,63}[a-z0-9]+$/;
+        if(bizname==''){
+            return 4;
+        }
+        if(compno==''){
+            return 5;
+        }
+        if(names==''){
+            return 6;
+        }
+        if(names==''){
+            return 7;
+        }
+        if(!reg.test(card)){
+            return 2;
+        }
+        if(tradcert==''){
+            return 8;
+        }
+        if(entrus==''){
+            return 9;
+        }
+        if(reveside==''||admcard==''||handid==''){
+            return 10;
+        }
+      
+        if(!em.test(email)){
+            return 3;
+        }
+        if(credtype==1){
+            if(groupcode==''){
+                return 12;
+            }
+        }
+        return true;
+    }
     </script>
 </html>

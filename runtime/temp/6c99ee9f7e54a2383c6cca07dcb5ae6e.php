@@ -1,4 +1,4 @@
-<?php if (!defined('THINK_PATH')) exit(); /*a:1:{s:79:"E:\xampp\htdocs\wechat\public/../application/index\view\edit\edit_pro_auth.html";i:1503891368;}*/ ?>
+<?php if (!defined('THINK_PATH')) exit(); /*a:1:{s:79:"E:\xampp\htdocs\wechat\public/../application/index\view\edit\edit_pro_auth.html";i:1504078333;}*/ ?>
 <!doctype html>
 <html lang="en">
 <head>
@@ -98,21 +98,21 @@
           <div class="photo_con" onclick="setvar(1)">
             <div class="weui-uploader__input-box" style="width:100%;height:114px" id="selectfiles1" >
                <img src="<?php echo (isset($info['admcard']) && ($info['admcard'] !== '')?$info['admcard']:'/imgs/add_icon.png'); ?>" id="img1">
-               <input type="hidden" name="admcard" id="imgurl1">
+               <input type="hidden" name="admcard" value="<?php echo $info['admcard']; ?>" id="imgurl1">
             </div>
             <span style="margin-left:40px">身份证正面</span>
           </div>
           <div class="photo_con" onclick="setvar(2)">
             <div class="weui-uploader__input-box" style="width:100%;height:114px" id="selectfiles2" >
                 <img src="<?php echo (isset($info['reveside']) && ($info['reveside'] !== '')?$info['reveside']:'/imgs/add_icon.png'); ?>" id="img2">
-                <input type="hidden" name="reveside" id="imgurl2">
+                <input type="hidden" name="reveside" value="<?php echo $info['reveside']; ?>"  id="imgurl2">
             </div>
             <span style="margin-left:40px">身份证反面</span>
          </div>
          <div class="photo_con" onclick="setvar(3)">
             <div class="weui-uploader__input-box" style="width:100%;height:114px" id="selectfiles3">
                 <img src="<?php echo (isset($info['handid']) && ($info['handid'] !== '')?$info['handid']:'/imgs/add_icon.png'); ?>" id="img3">
-                <input type="hidden" name="handid" id="imgurl3">
+                <input type="hidden" name="handid" value="<?php echo $info['handid']; ?>" id="imgurl3">
             </div>
             <span>手持身份证正面照</span>
         </div>  
@@ -256,7 +256,17 @@
     $("#up").click(function(){
         var info = $("#form").serialize()
         info = decodeURIComponent(info,true);
-    
+        var v = via(info);
+        if(v==11){
+            weui.alert('请完善信息！');
+            return;
+        }else if(v==2){
+            weui.alert('请输入正确的身份证号码！');
+            return;
+        }else if(v==3){
+            weui.alert('请输入正确的邮箱！');
+            return;
+        }
         var loading = weui.loading('请稍后', {
           className: 'custom-classname'
         });
@@ -280,5 +290,31 @@
            }
        });
     })
+    function via(info){
+        //验证表单
+        str=info.split("&");
+        var all = [];
+        for(var i in str){
+             all[i] = str[i].split('=');
+        }
+       for(var j in all){
+           for(var c in all[j]){
+               if(!all[j][1]){
+                   return 11;
+               }
+           }
+       }
+    var card = $("input[name='idno']").val(); 
+    var email = $("input[name='email']").val(); 
+    var reg = /(^\d{15}$)|(^\d{18}$)|(^\d{17}(\d|X|x)$)/;
+    var em = /^[a-z0-9]+([._\\-]*[a-z0-9])*@([a-z0-9]+[-a-z0-9]*[a-z0-9]+.){1,63}[a-z0-9]+$/;
+    if(!reg.test(card)){
+        return 2;
+    }
+    if(!em.test(email)){
+        return 3;
+    }
+        return true;
+    }
 </script>
 </html>

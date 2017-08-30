@@ -112,6 +112,10 @@ class Sign extends Base
     public function pact_type()
     {
       $pactinfo = $this -> con_datas();
+     
+      if(!$pactinfo){
+        return view('/pacttype/no_pact');die;
+      }
       $sinfo = $this ->selectinfo();
       $ty = $pactinfo['types'];//合同类型 1独家协议 2肖像独家 3代理协议
       $signtype = $sinfo['signtype'];
@@ -141,15 +145,20 @@ class Sign extends Base
     public function con_datas()
     {
       $sid = Session::get('sid');
-      $url = '/inter/star/agreelist';
-      $data['sid'] = $sid;
-      $res = request_post($url,$data);
-      
-      if($res['status']==1){
-        return $res['data']['data'][0];
+      if($sid){
+        $url = '/inter/star/agreelist';
+        $data['sid'] = $sid;
+        $res = request_post($url,$data);
+        
+        if($res['status']==1){
+          return $res['data']['data'][0];
+        }else{
+          return 0;
+        }
       }else{
         return 0;
       }
+
     }
 
     //查看是否有签约数据（暂时保留）
@@ -169,10 +178,15 @@ class Sign extends Base
     private function selectinfo()
     {
       $sid = Session::get('sid');
-      $url = '/inter/star/startinfolook';
-      $data['id'] = $sid;
-      $res = request_post($url,$data);
-      return $res['data'];
+      if($sid){
+        $url = '/inter/star/startinfolook';
+        $data['id'] = $sid;
+        $res = request_post($url,$data);
+        return $res['data'];
+      }else{
+        return false;
+      }
+
     }
 
 
@@ -308,7 +322,7 @@ class Sign extends Base
         $url = 'https://api.youxingku.cn/signpact/genpact.php';
        //生成合同模板号和所需变量
        $wqdata = $this->createnum($cinfo,$begindate,$endtime);
-
+        
        $res = get_api($url,$wqdata);
        if($res['status']==1){ 
         //发起签约
@@ -466,9 +480,8 @@ class Sign extends Base
         $vars = "[yifang]:".$cinfo['partyb'].",[touziren]:".$cinfo['investor'].",[lianxidizhi]:".$cinfo['workaddr'].",[lianxiren]:".$cinfo['workman'].",[lianxidianhua]:".$cinfo['worktel'].",[dianziyouxiang]:".$cinfo['workemail'].",[hezuoqixian]:".$cinfo['coopnum'].",[hezuokaishiriqi]:".$begindate.",[hezuozhongzhiriqi]:".$endtime.",[jfwqsrbl]:".$cinfo['jfwqsrbl'].",[yfwqsrbl]:".$cinfo['yfwqsrbl'].",[jfsrbl]:".$cinfo['jfsrbl'].",[yfsrbl]:".$cinfo['yfsrbl'].",[yfkhmc]:".$cinfo['openname'].",[yfkhyh]:".$cinfo['openbank'].",[yfyhzh]:".$cinfo['openacct'].",[jfsrbl2]:".$cinfo['jfsrbl2'].",[yfsrbl2]:".$cinfo['yfsrbl2'];
         return $wqdata = array('temid'=>1004,'vars'=>$vars);
       }else if($signtype==3&&$ty==1){ //独家协议-经纪公司
-
         $vars = "[yifang]:".$cinfo['partyb'].",[lianxidizhi]:".$cinfo['workaddr'].",[lianxiren]:".$cinfo['workman'].",[lianxidianhua]:".$cinfo['worktel'].",[dianziyouxiang]:".$cinfo['workemail'].",[hezuoqixian]:".$cinfo['coopnum'].",[hezuokaishiriqi]:".$begindate.",[hezuozhongzhiriqi]:".$endtime.",[jfwqsrbl]:".$cinfo['jfwqsrbl'].",[yfwqsrbl]:".$cinfo['yfwqsrbl'].",[jfsrbl]:".$cinfo['jfsrbl'].",[yfsrbl]:".$cinfo['yfsrbl'].",[yfkhmc]:".$cinfo['openname'].",[yfkhyh]:".$cinfo['openbank'].",[yfyhzh]:".$cinfo['openacct'];
-        return $wqdata = array('temid'=>1007,'vars'=>$vars);
+        return $wqdata = array('temid'=>1027,'vars'=>$vars);
 
 
       }else if($signtype==3&&$ty==2){ //肖像独家-经纪公司

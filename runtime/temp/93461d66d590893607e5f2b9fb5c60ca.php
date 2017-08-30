@@ -1,4 +1,4 @@
-<?php if (!defined('THINK_PATH')) exit(); /*a:3:{s:81:"E:\xampp\htdocs\wechat\public/../application/index\view\pacttype\agency_type.html";i:1503648032;s:70:"E:\xampp\htdocs\wechat\public/../application/index\view\head_type.html";i:1503991122;s:71:"E:\xampp\htdocs\wechat\public/../application/index\view\pub_button.html";i:1503892599;}*/ ?>
+<?php if (!defined('THINK_PATH')) exit(); /*a:3:{s:81:"E:\xampp\htdocs\wechat\public/../application/index\view\pacttype\agency_type.html";i:1503648032;s:70:"E:\xampp\htdocs\wechat\public/../application/index\view\head_type.html";i:1503991122;s:71:"E:\xampp\htdocs\wechat\public/../application/index\view\pub_button.html";i:1504003892;}*/ ?>
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
@@ -287,7 +287,7 @@
 <?php elseif($pact['states']==3): ?>
 <footer class="footer reupinfo" eid="<?php echo $pact['id']; ?>" style="position:fixed">重新申请</footer>
 <?php elseif($pact['states']==6): ?>
-<footer class="footer" style="position:fixed">重新签约</footer>
+<footer class="footer sign_up" style="position:fixed">重新签约</footer>
 <?php endif; endif; ?>
 <script>
   $('.sign_up').click(function(){

@@ -1,4 +1,4 @@
-<?php if (!defined('THINK_PATH')) exit(); /*a:1:{s:72:"E:\xampp\htdocs\wechat\public/../application/index\view\sign\myinfo.html";i:1503890525;}*/ ?>
+<?php if (!defined('THINK_PATH')) exit(); /*a:1:{s:72:"E:\xampp\htdocs\wechat\public/../application/index\view\sign\myinfo.html";i:1504083121;}*/ ?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -6,7 +6,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>实名认证</title>
+    <title>我的账号</title>
     <link rel="stylesheet" type="text/css" href="/css/weui.min.css">
     <link rel="stylesheet" href="/css/lib/common.css">
     <script type="text/javascript" src="/js/jquery-1.8.3.min.js"></script>
@@ -42,12 +42,29 @@
         .weui-grid img{
             height:5.7rem;
         }
+        .weui-msg__title{
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            background-color: #EB2000;
+            margin:0 auto;
+        }
+        .tit{
+            text-align: center;
+            line-height: 100px;
+            color:white;
+        }
     </style>
 </head>
 
 <body>
     <div class="container">
-        <?php if($statrinfo['ifauth']==3): ?>
+    <?php if(empty($statrinfo) || (($statrinfo instanceof \think\Collection || $statrinfo instanceof \think\Paginator ) && $statrinfo->isEmpty())): ?>
+    <div class="weui-msg">
+            <h2 class="weui-msg__title"><span class="tit">绑定成功</span></h2>
+            <p class="weui-msg__desc" style="margin-top: 10px;">当前账号：<?php echo $wx_userinfo['mobile']; ?></p>
+        </div>
+    <?php else: if($statrinfo['ifauth']==3): ?>
         <div class="weui-msg">
             <div class="weui-msg__icon-area"><i><img src="/imgs/icon-checking.png" alt=""></i></div>
             <div class="weui-msg__text-area">
@@ -142,7 +159,7 @@
     </div>
     <?php if($statrinfo['ifauth']==4): ?>
     <footer class="footer " eid="<?php echo $statrinfo['id']; ?>">重新认证</footer>
-    <?php endif; ?>
+    <?php endif; endif; ?>
     </div>
 </body>
 <script>

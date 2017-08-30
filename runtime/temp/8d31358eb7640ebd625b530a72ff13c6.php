@@ -1,4 +1,4 @@
-<?php if (!defined('THINK_PATH')) exit(); /*a:1:{s:74:"E:\xampp\htdocs\wechat\public/../application/index\view\sign\sign_fir.html";i:1503972015;}*/ ?>
+<?php if (!defined('THINK_PATH')) exit(); /*a:1:{s:74:"E:\xampp\htdocs\wechat\public/../application/index\view\sign\sign_fir.html";i:1504077939;}*/ ?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -69,8 +69,8 @@
                 </div>
                 <div class="weui-cell__bd" dir="rtl">
                     <select class=" weui-select " name="coopnum">
-                            <option style="color: #F5F5F5" disabled selected>请选择合作期限</option>
-                            <option value="24" >24个月</option>
+                            <option style="color: #F5F5F5" disabled >请选择合作期限</option>
+                            <option value="24" selected >24个月</option>
                             <option value="36" >36个月</option>
                         </select>
                 </div>
@@ -116,6 +116,23 @@
         $('.up').click(function(){
           var info = $("form").serialize()
           info = decodeURIComponent(info,true);
+          var v = via(info);
+            if(v==11){
+                weui.alert('请完善信息！');
+                return;
+            }else if(v==2){
+                weui.alert('请输入正确的身份证号码！');
+                return;
+            }else if(v==3){
+                weui.alert('请输入正确的邮箱！');
+                return;
+            }else if(v==4){
+                weui.alert('请输入地址！');
+                return;
+            }else if(v==5){
+                weui.alert('请输入正确的手机号');
+                return;
+            }
           $.ajax({
             url:"/index/sign/signup",
             type:"POST",
@@ -131,5 +148,41 @@
             }
           });
         })
+
+            function via(info){
+            //验证表单
+            str=info.split("&");
+            var all = [];
+            for(var i in str){
+                all[i] = str[i].split('=');
+            }
+        for(var j in all){
+            for(var c in all[j]){
+                if(!all[j][1]){
+                    return 11;
+                }
+            }
+        }
+        // var card = $("input[name='cardnum']").val(); 
+        var email = $("input[name='workemail']").val();
+        var workaddr = $("input[name='workaddr']").val();
+        var worktel = $("input[name='worktel']").val();
+        var reg = /(^\d{15}$)|(^\d{18}$)|(^\d{17}(\d|X|x)$)/;
+        var em = /^[a-z0-9]+([._\\-]*[a-z0-9])*@([a-z0-9]+[-a-z0-9]*[a-z0-9]+.){1,63}[a-z0-9]+$/;
+        var t = /^1(3|4|5|7|8)\d{9}$/;
+        if(workaddr==''){
+            return 4;
+        }
+        // if(!reg.test(card)){
+        //     return 2;
+        // }
+        if(!em.test(email)){
+            return 3;
+        }
+        if(!t.test(worktel)){
+            return 5;
+        }
+            return true;
+        }
     </script>
 </html>
