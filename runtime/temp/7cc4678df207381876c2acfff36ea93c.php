@@ -1,4 +1,4 @@
-<?php if (!defined('THINK_PATH')) exit(); /*a:1:{s:77:"E:\xampp\htdocs\wechat\public/../application/index\view\userinfo\mylogin.html";i:1503663686;}*/ ?>
+<?php if (!defined('THINK_PATH')) exit(); /*a:1:{s:77:"E:\xampp\htdocs\wechat\public/../application/index\view\userinfo\mylogin.html";i:1504145556;}*/ ?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -13,6 +13,7 @@
 			float: right;
 			margin-right: 17px;
 			margin-top: 10px;
+            font-size:10px; 
 		}
 	</style>
 </head>
@@ -27,7 +28,7 @@
             <input class="weui-input mobile" type="tel" name="mobile" placeholder="请输入手机号">
         </div>
         <div class="weui-cell__ft" style="width:120px;border:0">
-            <input class="weui-vcode-btn"  style="background-color: #EB2000;color: white;border:0" value="获取验证码" readonly>
+            <input class="weui-vcode-btn"  style="background-color: #EB2000;color: white;border:0" value="获取验证码" readonly="readonly">
         </div>
     </div>
     <div class="weui-cell">
@@ -55,7 +56,7 @@
 <div class="weui-btn-area">
     <a class="weui-btn weui-btn_warn" id="loginform" href="javascript:" id="showTooltips">确定</a>
 </div>
-	<!-- <a class="bind" href="/index/binduser/bind">我已有账号，立即绑定</a> -->
+	<a class="bind sty" href="/index/binduser/bind">我已有账号，立即绑定</a>
 </body>
 <script>
     var wait = 60;

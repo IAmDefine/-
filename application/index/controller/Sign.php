@@ -24,7 +24,8 @@ class Sign extends Base
         //查看是否有签约
         $pacrinfo = $this->con_datas();
         if(!empty($pacrinfo)){
-          $this->redirect('/index/sign/pact_type');die;
+          return view('/sign/transfer');
+          // $this->redirect('/index/sign/pact_type');die;
         }
         //1个人 2工作室 3经纪公司        
         $signtype = $starinfo['data']['signtype'];
@@ -50,7 +51,8 @@ class Sign extends Base
 
       }else if($starinfo['data']['ifauth']==3 || $starinfo['data']['ifauth']==4 ){
         //跳转到认证结果页面
-        $this -> redirect('/index/sign/myinfo');
+        // $this -> redirect('/index/sign/myinfo');
+        return view('/sign/tra_auth');
       }
     }
 
@@ -372,6 +374,7 @@ class Sign extends Base
          $mobile = Session::get('wx_userinfo')['mobile'];
          $sid = $myinfo['id'];
          $a = $this->createwquid($myinfo,$mobile,$sid);
+        //  dd($a);
          $myinfo = $this->selectinfo();
       }
       //下载章图片

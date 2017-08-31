@@ -1,4 +1,4 @@
-<?php if (!defined('THINK_PATH')) exit(); /*a:1:{s:71:"E:\xampp\htdocs\wechat\public/../application/index\view\sign\medal.html";i:1504070805;}*/ ?>
+<?php if (!defined('THINK_PATH')) exit(); /*a:1:{s:71:"E:\xampp\htdocs\wechat\public/../application/index\view\sign\medal.html";i:1504157291;}*/ ?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -102,12 +102,12 @@
     </div>
     <div class="weui-flex">
         <div class="weui-flex__item" style="padding: 1.5rem;text-align:center; padding-bottom: 0.75rem;">
-         <img src="<?php echo $stamimg; ?>" alt="" style="width:100%;">
+         <img src="<?php echo (isset($stamimg) && ($stamimg !== '')?$stamimg:''); ?>" alt="" style="width:100%;">
          <!-- <div class="chioce-btn">选择</div> -->
         </div>
         
         <div class="weui-flex__item"  style="padding: 1.5rem;text-align:center; padding-bottom: 0.75rem;">
-            <!-- <img src="<?php echo $stamimg; ?>" alt="" style="width:100%;"> -->
+            <!-- <img src="<?php echo (isset($stamimg) && ($stamimg !== '')?$stamimg:''); ?>" alt="" style="width:100%;"> -->
             <!-- <div class="chioce-btn">选择</div> -->
         </div>
     </div>

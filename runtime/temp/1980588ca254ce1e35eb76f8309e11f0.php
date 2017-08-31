@@ -1,4 +1,4 @@
-<?php if (!defined('THINK_PATH')) exit(); /*a:3:{s:82:"E:\xampp\htdocs\wechat\public/../application/index\view\pacttype\workage_type.html";i:1503648163;s:70:"E:\xampp\htdocs\wechat\public/../application/index\view\head_type.html";i:1503991122;s:71:"E:\xampp\htdocs\wechat\public/../application/index\view\pub_button.html";i:1504003892;}*/ ?>
+<?php if (!defined('THINK_PATH')) exit(); /*a:3:{s:82:"E:\xampp\htdocs\wechat\public/../application/index\view\pacttype\workage_type.html";i:1503648163;s:70:"E:\xampp\htdocs\wechat\public/../application/index\view\head_type.html";i:1504079850;s:71:"E:\xampp\htdocs\wechat\public/../application/index\view\pub_button.html";i:1504003892;}*/ ?>
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
@@ -12,9 +12,7 @@
 <div class="container">
  <div class="tab">
   <div class="text-size-26 tab-active">合同</div>
-  <!-- <a href="/index/sign/myinfo"> -->
   <div class="text-size-26 identity">身份认证</div>
-  <!-- </a> -->
 </div>
 <?php if(!(empty($pact) || (($pact instanceof \think\Collection || $pact instanceof \think\Paginator ) && $pact->isEmpty()))): if($pact['states']==1): ?>
  <div class="status">

@@ -24,8 +24,9 @@ class Userinfo extends Controller{
         //之后换成unionid
         // $wxid = $wechatinfo['unionid'];
         $url = '/inter/index/userdetail';
-        $wxid = $wechatinfo['openid'];
-        // $wxid = rand(111111,999999);
+        // $wxid = $wechatinfo['openid'];
+        // $wxid = 565321;
+        $wxid = rand(111111,999999);
         
         $data['wxpcopenid'] = $wxid;
         $sinfo = request_post($url,$data);

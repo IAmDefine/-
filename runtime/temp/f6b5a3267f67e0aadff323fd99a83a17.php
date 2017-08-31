@@ -1,4 +1,4 @@
-<?php if (!defined('THINK_PATH')) exit(); /*a:1:{s:74:"E:\xampp\htdocs\wechat\public/../application/index\view\edit\edit_fir.html";i:1503907837;}*/ ?>
+<?php if (!defined('THINK_PATH')) exit(); /*a:1:{s:74:"E:\xampp\htdocs\wechat\public/../application/index\view\edit\edit_fir.html";i:1504156326;}*/ ?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -32,13 +32,13 @@
                 <div class="weui-cell ">
                     <div class="weui-cell__hd "><label class="weui-label ">法定代表人</label></div>
                     <div class="weui-cell__bd ">
-                        <input class="weui-input " style="text-align: -webkit-right; " type="text " placeholder="请输入投资人姓名" />
+                        <input class="weui-input " style="text-align: -webkit-right; " type="text " name="investor" value="<?php echo (isset($pinfo['investor'] ) && ($pinfo['investor']  !== '')?$pinfo['investor'] :''); ?>" placeholder="请输入法定代表人" />
                     </div>
                 </div>
                 <div class="weui-cell ">
                     <div class="weui-cell__hd "><label class="weui-label ">联系人</label></div>
                     <div class="weui-cell__bd ">
-                        <input class="weui-input" style="text-align: -webkit-right; " value="<?php echo (isset($pinfo['workman'] ) && ($pinfo['workman']  !== '')?$pinfo['workman'] :''); ?>"  name="workman" type="text " placeholder="请输入经办人姓名" />
+                        <input class="weui-input" style="text-align: -webkit-right; " value="<?php echo (isset($pinfo['workman'] ) && ($pinfo['workman']  !== '')?$pinfo['workman'] :''); ?>"  name="workman" type="text " placeholder="请输入联系人" />
                     </div>
                 </div>
                 <div class="weui-cell ">
@@ -112,24 +112,80 @@
     </div>
 </body>
 <script>
-        //提交表单
-        $('.up').click(function(){
-          var info = $("form").serialize()
-          info = decodeURIComponent(info,true);
-          $.ajax({
-            url:"/index/sign/editsign",
-            type:"POST",
-            data:info,
-            dataType:'JSON',
-            success:function (data) {
-              if(data['status']==1){
-                //   weui.alert('跳转合同状态页面');
-                window.location.href='/index/sign/pact_type'
-              }else{
-                weui.alert(data['msg']);
-              }
+    //提交表单 
+    $('.up').click(function(){
+        var info = $("form").serialize()
+        info = decodeURIComponent(info,true);
+        var v = via(info);
+        if(v==2){
+            weui.alert('请输入正确的身份证号码！');
+            return;
+        }else if(v==3){
+            weui.alert('请输入正确的邮箱！');
+            return;
+        }else if(v==4){
+            weui.alert('请输入地址！');
+            return;
+        }else if(v==5){
+            weui.alert('请输入正确的手机号');
+            return;
+        }else if(v==6){
+            weui.alert('请输入银行信息！');
+            return;
+        }else if(v==7){
+            weui.alert('请输入联系人！');
+            return;
+        }else if(v==8){
+            weui.alert('请输入法定代表人！');
+            return;
+        }
+        $.ajax({
+        url:"/index/sign/editsign",
+        type:"POST",
+        data:info,
+        dataType:'JSON',
+        success:function (data) {
+            if(data['status']==1){
+            //   weui.alert('跳转合同状态页面');
+            window.location.href='/index/sign/pact_type'
+            }else{
+            weui.alert(data['msg']);
             }
-          });
-        })
-    </script>
+        }
+        });
+    })
+    function via(info){
+        
+     var workman = $("input[name='workman']").val(); 
+     var investor = $("input[name='investor']").val(); 
+     var email = $("input[name='workemail']").val();
+     var workaddr = $("input[name='workaddr']").val();
+     var worktel = $("input[name='worktel']").val();
+     var openname = $("input[name='openname']").val();
+     var openbank = $("input[name='openbank']").val();
+     var openacct = $("input[name='openacct']").val();
+     var reg = /(^\d{15}$)|(^\d{18}$)|(^\d{17}(\d|X|x)$)/;
+     var em = /^[a-z0-9]+([._\\-]*[a-z0-9])*@([a-z0-9]+[-a-z0-9]*[a-z0-9]+.){1,63}[a-z0-9]+$/;
+     var t = /^1(3|4|5|7|8)\d{9}$/;
+     if(investor==''){
+         return 8;
+     }
+     if(workaddr==''){
+         return 4;
+     }
+     if(workman==''){
+         return 7;
+     }
+     if(!em.test(email)){
+         return 3;
+     }
+     if(!t.test(worktel)){
+         return 5;
+     }
+     if(openname==''||openbank==''||openacct==''){
+         return 6;
+     }
+         return true;
+     }
+</script>
 </html>

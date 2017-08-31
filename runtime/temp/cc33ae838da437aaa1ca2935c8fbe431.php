@@ -1,4 +1,4 @@
-<?php if (!defined('THINK_PATH')) exit(); /*a:1:{s:72:"E:\xampp\htdocs\wechat\public/../application/index\view\sign\myinfo.html";i:1504083121;}*/ ?>
+<?php if (!defined('THINK_PATH')) exit(); /*a:1:{s:72:"E:\xampp\htdocs\wechat\public/../application/index\view\sign\myinfo.html";i:1504150999;}*/ ?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -42,7 +42,7 @@
         .weui-grid img{
             height:5.7rem;
         }
-        .weui-msg__title{
+        .weui-msg__title1{
             width: 100px;
             height: 100px;
             border-radius: 50%;
@@ -61,7 +61,7 @@
     <div class="container">
     <?php if(empty($statrinfo) || (($statrinfo instanceof \think\Collection || $statrinfo instanceof \think\Paginator ) && $statrinfo->isEmpty())): ?>
     <div class="weui-msg">
-            <h2 class="weui-msg__title"><span class="tit">绑定成功</span></h2>
+            <h2 class="weui-msg__title1"><span class="tit">绑定成功</span></h2>
             <p class="weui-msg__desc" style="margin-top: 10px;">当前账号：<?php echo $wx_userinfo['mobile']; ?></p>
         </div>
     <?php else: if($statrinfo['ifauth']==3): ?>

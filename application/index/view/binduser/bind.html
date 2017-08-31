@@ -15,14 +15,55 @@
     <div class="weui-cell">
         <div class="weui-cell__hd"><label class="weui-label">手机号:</label></div>
         <div class="weui-cell__bd">
-            <input class="weui-input" type="number" name="phone" placeholder="请输入手机号"/>
+            <input class="weui-input" type="number" name="mobile" placeholder="请输入手机号"/>
+        </div>
+    </div>
+    <div class="weui-cell">
+        <div class="weui-cell__hd"><label class="weui-label">密码:</label></div>
+        <div class="weui-cell__bd">
+            <input class="weui-input" type="password" name="pass" placeholder="密码"/>
         </div>
     </div>
     <input id="openid" type="hidden" value="{$Think.Session.openid}" name="openid">
 </div>
 </form>
 <div class="weui-btn-area">
-    <a class="weui-btn weui-btn_warn" id="loginform" href="javascript:" id="showTooltips">绑定微信</a>
+    <a class="weui-btn weui-btn_warn" id="loginform" href="javascript:">绑定微信</a>
 </div>
 </body>
+<script>
+    $("#loginform").click(function(){
+        var info = $("form").serialize()
+        info = decodeURIComponent(info,true);
+       var mobile = $("input[name='mobile']").val();
+       var pass = $("input[name='pass']").val();
+       if(mobile==''){
+        weui.topTips('请输入手机号');
+        return;
+       }
+       if(pass==''){
+        weui.topTips('请输入密码');
+        return;
+       }
+        $.ajax({
+            url:"/index/binduser/binduser",
+            type:"POST",
+            data:info,
+            dataType:'JSON',
+            success:function (data) {
+            if(data['status']==1){
+                weui.toast(data['msg'], {
+                    duration: 1500,
+                    className: 'custom-classname',
+                    callback: function(){
+                      window.location.href ="{$Think.session.url_goal}";
+                    }
+                });
+            }else if(data['status']==2||data['status']==3){
+                weui.alert(data['msg']);
+            }
+            }
+        });
+    })
+</script>
 </html>

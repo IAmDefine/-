@@ -1,4 +1,4 @@
-<?php if (!defined('THINK_PATH')) exit(); /*a:1:{s:75:"E:\xampp\htdocs\wechat\public/../application/index\view\sign\sign_work.html";i:1504079216;}*/ ?>
+<?php if (!defined('THINK_PATH')) exit(); /*a:1:{s:75:"E:\xampp\htdocs\wechat\public/../application/index\view\sign\sign_work.html";i:1504151128;}*/ ?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -58,7 +58,7 @@
                 <div class="weui-cell ">
                     <div class="weui-cell__hd "><label class="weui-label ">联系电话</label></div>
                     <div class="weui-cell__bd ">
-                        <input class="weui-input " style="text-align: -webkit-right; " name="worktel" type="number " placeholder="请输入联系电话" value="<?php echo (isset($sinfo['tel'] ) && ($sinfo['tel']  !== '')?$sinfo['tel'] :''); ?>"/>
+                        <input class="weui-input " style="text-align: -webkit-right; " name="worktel" type="number " placeholder="请输入联系电话" value="<?php echo \think\Session::get('wx_userinfo')['mobile']; ?>"/>
                     </div>
                 </div>
                 <div class="weui-cell ">
