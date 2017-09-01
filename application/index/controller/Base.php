@@ -22,9 +22,4 @@ class Base extends Controller
         header("Location: $url");die;
       }
     }
-
-
-
-
-
 }

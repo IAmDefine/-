@@ -84,6 +84,10 @@ class Userinfo extends Controller{
       if(!$data){
         return false;
       }
+      $r = $this->select_u($data['mobile']);
+      if($r==1){
+        return 2;
+      }
       $url ='/inter/index/register';
       $res = request_post($url,$data);
        if($res['status']==1){
@@ -96,6 +100,21 @@ class Userinfo extends Controller{
        }else{
            return 0;
        }
+  }
+
+  //判断是否存在
+  public function select_u($m){
+    $url ='/inter/index/userdetail';
+    $data['mobile'] = $m;
+    $res = request_post($url,$data);
+    if($res['status']==1){
+      return 1;
+    }else{
+      return 2;
+    }
+
+
+
   }
 
   //查询有没有填写信息
@@ -177,9 +196,7 @@ class Userinfo extends Controller{
       return 0;
     }
   }
-  public function ups(){
-    return $_POST;
-  }
+
   //清除session
   public function clearsession()
   {

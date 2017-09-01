@@ -1,4 +1,4 @@
-<?php if (!defined('THINK_PATH')) exit(); /*a:1:{s:72:"E:\xampp\htdocs\wechat\public/../application/index\view\sign\myinfo.html";i:1504150999;}*/ ?>
+<?php if (!defined('THINK_PATH')) exit(); /*a:1:{s:72:"E:\xampp\htdocs\wechat\public/../application/index\view\sign\myinfo.html";i:1504255296;}*/ ?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -131,26 +131,26 @@
            
             <a href="javascript:;" class="weui-grid" style="width:50%;">
                 <div class="">
-                    <img src="<?php echo (isset($statrinfo['admcard']) && ($statrinfo['admcard'] !== '')?$statrinfo['admcard']:'/imgs/add_icon.png'); ?>" alt="">
+                    <img src="<?php echo (isset($statrinfo['admcard']) && ($statrinfo['admcard'] !== '')?$statrinfo['admcard']:'/imgs/add_icon.png'); ?>" style="width:100%">
                 </div>
                 <p class="weui-grid__label">身份证正面</p>
             </a>
             <a href="javascript:;" class="weui-grid" style="width:50%;">
                 <div class="">
-                    <img src="<?php echo (isset($statrinfo['reveside']) && ($statrinfo['reveside'] !== '')?$statrinfo['reveside']:'/imgs/add_icon.png'); ?>" alt="">
+                    <img src="<?php echo (isset($statrinfo['reveside']) && ($statrinfo['reveside'] !== '')?$statrinfo['reveside']:'/imgs/add_icon.png'); ?>" style="width:100%">
                 </div>
                 <p class="weui-grid__label">身份证反面</p>
             </a>
             <a href="javascript:;" class="weui-grid" style="width:50%;">
                 <div class="">
-                    <img src="<?php echo (isset($statrinfo['handid']) && ($statrinfo['handid'] !== '')?$statrinfo['handid']:'/imgs/add_icon.png'); ?>" alt="">
+                    <img src="<?php echo (isset($statrinfo['handid']) && ($statrinfo['handid'] !== '')?$statrinfo['handid']:'/imgs/add_icon.png'); ?>" style="width:100%">
                 </div>
                 <p class="weui-grid__label">手持身份证正面照</p>
             </a>
             <?php if($statrinfo['credtype']==1): ?>
             <a href="javascript:;" class="weui-grid" style="width:50%;">
                 <div class="">
-                    <img src="<?php echo (isset($statrinfo['groupcode']) && ($statrinfo['groupcode'] !== '')?$statrinfo['groupcode']:'/imgs/add_icon.png'); ?>" alt="">
+                    <img src="<?php echo (isset($statrinfo['groupcode']) && ($statrinfo['groupcode'] !== '')?$statrinfo['groupcode']:'/imgs/add_icon.png'); ?>" style="width:100%">
                 </div>
                 <p class="weui-grid__label">组织机构代码证</p>
             </a>

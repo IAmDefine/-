@@ -83,33 +83,6 @@ class Sign extends Base
         }
     }
 
-    //资料审核失败页面
-    public function defeated()
-    {
-          $request = Request::instance();
-          $id = $request->only(['sid'])['sid'];
-          $url ='/inter/star/startinfolook';
-          $data['id'] = $id;
-          $res = request_post($url,$data);
-          if($res['status']==1){
-              $s['id'] = $res['data']['id'];
-              $s['checkdesc'] = $res['data']['checkdesc'];
-              $this->assign('s',$s);
-              return view('msg');
-          }
-    }
-
-    //个人-代理合同
-    // public function per_contract()
-    // {
-    //   return view('/contract/per_contract');
-    // }
-    //工作室-代理合同
-    // public function work_agency()
-    // {
-    //   return view('/contract/work_agency');
-    // }
-
     //我的签约
     public function pact_type()
     {
@@ -164,18 +137,18 @@ class Sign extends Base
     }
 
     //查看是否有签约数据（暂时保留）
-    public function con_data()
-    {
-      $sid = Session::get('sid');
-      $url = '/inter/star/agreelist';
-      $data['sid'] = $sid;
-      $res = request_post($url,$data);
-      if($res['status']==1){
-        return 1;
-      }else{
-        return 0;
-      }
-    }
+    // public function con_data()
+    // {
+    //   $sid = Session::get('sid');
+    //   $url = '/inter/star/agreelist';
+    //   $data['sid'] = $sid;
+    //   $res = request_post($url,$data);
+    //   if($res['status']==1){
+    //     return 1;
+    //   }else{
+    //     return 0;
+    //   }
+    // }
     //查看个人信息
     private function selectinfo()
     {
@@ -289,22 +262,22 @@ class Sign extends Base
     }
 
     //合同详情页面
-    public function contractinfo()
-    {
-      $sid = !empty(Session::get('sid'))?Session::get('sid'):'';
-      if($sid){
-        $url ='/inter/star/agreelist';
-        $data['sid'] = $sid;
-        $res = request_post($url,$data);
-        // dd($res[status]);
-        if($res['status']==1){
-        $this->assign('contractinfo',$res['data']['data'][0]);
-        }
-      }else{
-        $this->assign('contractinfo','');
-      }
-      return view();
-    }
+    // public function contractinfo()
+    // {
+    //   $sid = !empty(Session::get('sid'))?Session::get('sid'):'';
+    //   if($sid){
+    //     $url ='/inter/star/agreelist';
+    //     $data['sid'] = $sid;
+    //     $res = request_post($url,$data);
+    //     // dd($res[status]);
+    //     if($res['status']==1){
+    //     $this->assign('contractinfo',$res['data']['data'][0]);
+    //     }
+    //   }else{
+    //     $this->assign('contractinfo','');
+    //   }
+    //   return view();
+    // }
 
     //开始签约
     public function begin()

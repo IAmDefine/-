@@ -1,4 +1,4 @@
-<?php if (!defined('THINK_PATH')) exit(); /*a:1:{s:72:"E:\xampp\htdocs\wechat\public/../application/index\view\sign\agency.html";i:1503643210;}*/ ?>
+<?php if (!defined('THINK_PATH')) exit(); /*a:1:{s:72:"E:\xampp\htdocs\wechat\public/../application/index\view\sign\agency.html";i:1504257494;}*/ ?>
 <!DOCTYPE html>
 <html lang="en">
 

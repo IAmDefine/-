@@ -1,4 +1,4 @@
-<?php if (!defined('THINK_PATH')) exit(); /*a:1:{s:71:"E:\xampp\htdocs\wechat\public/../application/index\view\sign\medal.html";i:1504247602;}*/ ?>
+<?php if (!defined('THINK_PATH')) exit(); /*a:1:{s:71:"E:\xampp\htdocs\wechat\public/../application/index\view\sign\medal.html";i:1504247812;}*/ ?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -74,14 +74,12 @@
         .stamimg_one{
             float: left;
             width: 7rem;
-            /* height: 7rem; */
             margin-top: 1rem;
             margin-left: 5%;
         }
         .stamimg_two{
             float: left;
             width: 7rem;
-            /* height: 7rem; */
             margin-top: 1rem;
             margin-left: 16%;
         }
@@ -98,21 +96,6 @@
             display: block; 
             margin-bottom: 0.5rem;
         }
-        /* .radio{
-            border:1px solid red;
-            width: 15px;
-            height: 15px;
-            border-radius: 50%;
-        }
-        .ra{
-            border:1px solid red;
-            width: 9px;
-            height: 9px;
-            border-radius: 50%;
-            background-color: red;
-            margin-left: 2px;
-            margin-top: 2px;
-        } */
     </style>
 </head>
 
@@ -188,14 +171,6 @@
     })
 </script>
 <script>
-    $("#one").click(function(){
-        $(".sta").val('1');
-    })
-
-    $("#two").click(function(){
-        $(".sta").val('2');
-    })
-
     $(".sign").click(function(){
         var loading = weui.loading('请稍后', {
           className: 'custom-classname'
