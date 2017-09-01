@@ -309,6 +309,7 @@ class Sign extends Base
     //开始签约
     public function begin()
     {
+      $flg = isset($_POST['flg'])?$_POST['flg'] : 1;
       $sid = !empty(Session::get('sid'))?Session::get('sid'):'';
       if($sid){
         $url ='/inter/star/agreelist';
@@ -319,8 +320,18 @@ class Sign extends Base
         $endtime = date("Y-m-d", strtotime("+".$cinfo['coopnum'] ."months", strtotime($begindate)));//合同结束日期
         $res = $this->selectinfo();
         $wquid = $res['wquid'];
-        $stampid = $res['stampid'];
-
+        if($flg==1){
+          $stampid = $res['stampid'];
+        }else if($flg==2){
+            //查询用户表信息
+            $url = '/inter/index/userdetail';
+            $uinfo = Session::get('wx_userinfo');
+            $u['uid'] = $uinfo['uid'];
+            $res = request_post($url,$u);
+            if($res['status']==1){
+              $stampid = $res['data'][0]['diystampid'];
+            }
+        }
         $url = 'https://api.youxingku.cn/signpact/genpact.php';
        //生成合同模板号和所需变量
        $wqdata = $this->createnum($cinfo,$begindate,$endtime);
@@ -368,27 +379,75 @@ class Sign extends Base
     //签章页面
     public function medal()
     {
-      //查询个人信息
+      //查询明星信息
       $myinfo = $this->selectinfo();
-      if(empty($myinfo['wquid'])){
+      if(!$myinfo['wquid']){
          $mobile = Session::get('wx_userinfo')['mobile'];
          $sid = $myinfo['id'];
          $a = $this->createwquid($myinfo,$mobile,$sid);
-        //  dd($a);
+           
          $myinfo = $this->selectinfo();
       }
-      //下载章图片
+      if(!$myinfo['stampurl']){
+        //下载章图片
+        $url = 'https://api.youxingku.cn/signpact/downstamp.php';
+        $data['uid'] = $myinfo['wquid'];
+        $data['stampid'] = $myinfo['stampid'];
+        $info = get_api($url,$data);
+        if($info['status']==1){
+          $png = $info['data']['fname'];
+          $url = '/inter/star/startinfoedit';
+          $eds['id'] = $myinfo['id'];
+          $eds['stampurl'] = $png;
+          $res = request_post($url,$eds);
+          $myinfo = $this->selectinfo();
+        }
+      }
+      //查询用户表信息
+      $url = '/inter/index/userdetail';
+      $uinfo = Session::get('wx_userinfo'); 
+      $u['uid'] = $uinfo['uid'];
+      $res = request_post($url,$u);
+      if($res['status']==1){
+        if($res['data'][0]['diystampurl']){
+          $this -> assign('diystampurl',$res['data'][0]['diystampurl']);
+        }else{
+          $this -> assign('diystampurl','');
+        }
+      }
+
+      $this->assign('myinfo',$myinfo);
+      return view();
+    }
+
+    //上传自定义签章
+    public function mystamp()
+    {
+      $stamp = $_POST['stamp'];
+      $wquid = $_POST['wquid'];
+      //下载签章
       $url = 'https://api.youxingku.cn/signpact/downstamp.php';
-      $data['uid'] = $myinfo['wquid'];
-      $data['stampid'] = $myinfo['stampid'];
+      $data['uid'] = $wquid;
+      $data['stampid'] = $stamp;
       $info = get_api($url,$data);
       if($info['status']==1){
         $png = $info['data']['fname'];
-        $this->assign('stamimg',$png);
+        $url = '/inter/index/useredit';
+        $uinfo = Session::get('wx_userinfo'); 
+        $editu['uid'] = $uinfo['uid'];
+        $editu['diystampid'] = $stamp;
+        $editu['diystampurl'] = $png;
+        $res = request_post($url,$editu);
+        if($res['status']==1){
+          return array('status'=>1,'msg'=>'成功');
+        }else{
+          return array('status'=>3,'msg'=>'失败');
+        }
+      }else{
+        return array('status'=>3,'msg'=>'失败');
       }
-      
-      return view();
     }
+
 
     //创建文签uid和印章
     private function createwquid($data,$mobile,$sid)

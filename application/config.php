@@ -14,14 +14,16 @@ return [
     // | 应用设置
     // +----------------------------------------------------------------------
     //微信appid
-    'appid'                  =>'wx7e63005d10605fac',
+    // 'appid'                  =>'wx7e63005d10605fac',
+    'appid'                  =>'wx24868be619e256e6',
     //微信appsecret
-    'appsecret'              =>'ceb707226271b0ebf434788708dd5e08',
+    // 'appsecret'              =>'ceb707226271b0ebf434788708dd5e08',
+    'appsecret'              =>'2ab8a65dafa1b3d9a950084d603fb062',
     //微信回掉地址
-    'redirect_uri'           =>'http://wechat.tiansai.top/index/userinfo/login',
+    'redirect_uri'           =>'http://wx.youxingku.com/index/userinfo/login',
     //接口域名
-    'apidomain'            =>'api.youxingku.cc',
-    // 'apidomain'            =>'http://test.api.youxingku.cn',
+    // 'apidomain'            =>'api.youxingku.cc',
+    'apidomain'            =>'http://test.api.youxingku.cn',
 
     // 应用命名空间
     'app_namespace'          => 'app',

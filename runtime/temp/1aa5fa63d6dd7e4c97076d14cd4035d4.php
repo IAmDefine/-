@@ -1,4 +1,4 @@
-<?php if (!defined('THINK_PATH')) exit(); /*a:1:{s:71:"E:\xampp\htdocs\wechat\public/../application/index\view\sign\medal.html";i:1504157291;}*/ ?>
+<?php if (!defined('THINK_PATH')) exit(); /*a:1:{s:71:"E:\xampp\htdocs\wechat\public/../application/index\view\sign\medal.html";i:1504247602;}*/ ?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -12,6 +12,18 @@
     <script type="text/javascript" src="/js/weui.min.js"></script>
     <script type="text/javascript" src="/js/lib/plupload-2.1.2/js/plupload.full.min.js"></script>
     <style>
+        .sprire_Pcenter{
+            width: 0.8rem;height: 0.8rem;
+            background-image: url("/imgs/sprire_Pcenter.png");
+            background-repeat: no-repeat;
+            display: block;margin: 0 auto;
+        }
+        .sprite_unchecked{
+            background-position: -230px 0;
+        }
+        .sprite_checked{
+            background-position: -230px -20px;
+        }
         .weui-cells {
             margin-top: 0;
         }
@@ -81,6 +93,26 @@
             color: #000;
             margin-top: .5rem;
         }
+        .click_check>img{
+            height: 6.25rem;   
+            display: block; 
+            margin-bottom: 0.5rem;
+        }
+        /* .radio{
+            border:1px solid red;
+            width: 15px;
+            height: 15px;
+            border-radius: 50%;
+        }
+        .ra{
+            border:1px solid red;
+            width: 9px;
+            height: 9px;
+            border-radius: 50%;
+            background-color: red;
+            margin-left: 2px;
+            margin-top: 2px;
+        } */
     </style>
 </head>
 
@@ -102,14 +134,24 @@
     </div>
     <div class="weui-flex">
         <div class="weui-flex__item" style="padding: 1.5rem;text-align:center; padding-bottom: 0.75rem;">
-         <img src="<?php echo (isset($stamimg) && ($stamimg !== '')?$stamimg:''); ?>" alt="" style="width:100%;">
-         <!-- <div class="chioce-btn">选择</div> -->
+         <label>   
+             <div class="click_check">
+                <img src="<?php echo (isset($myinfo['stampurl']) && ($myinfo['stampurl'] !== '')?$myinfo['stampurl']:''); ?>" alt="" style="width:125px;">
+                 <i class="sprire_Pcenter sprite_unchecked"></i>
+             </div>
+        </label>
         </div>
-        
         <div class="weui-flex__item"  style="padding: 1.5rem;text-align:center; padding-bottom: 0.75rem;">
-            <!-- <img src="<?php echo (isset($stamimg) && ($stamimg !== '')?$stamimg:''); ?>" alt="" style="width:100%;"> -->
-            <!-- <div class="chioce-btn">选择</div> -->
+            <?php if($diystampurl): ?>
+            <label>
+                <div class="click_check">
+                    <img src="<?php echo (isset($diystampurl) && ($diystampurl !== '')?$diystampurl:''); ?>" alt="" style="width:125px;">
+                    <i class="sprire_Pcenter sprite_unchecked"></i>
+                </div>
+            </label>
+            <?php endif; ?>
         </div>
+    
     </div>
     <div class="weui-grids" style=" background-color:#f5f5f5;position:absolute;width:100%;">
         <div class="weui-cell ">
@@ -123,9 +165,9 @@
     </div>
     
     </div>
- 
+    
     <footer class="foot ">
-        <div class="one-a weui-grid" style="text-align: center; width:50%;background-color:#ffffff;padding:0;border-top:0.1rem solid #f5f5f5;">
+        <div class="one-a weui-grid fujian" style="text-align: center; width:50%;background-color:#ffffff;padding:0;border-top:0.1rem solid #f5f5f5;">
             合同附件
         </div>
         <div class="two-a weui-grid sign" style="text-align: center; width:50%;padding:0;background-color: red;color:#ffffff; ">
@@ -133,19 +175,39 @@
         </div>
     </footer>
     </div>
+    <input type="hidden" value='1' class="sta">
 </body>
-
 <script>
+    var click_num;
+    $(".sprite_unchecked").eq(0).addClass("sprite_checked");
+    $(".click_check").click(function(){
+        click_num=$(this).index(".click_check");
+        $(".sprite_unchecked").removeClass("sprite_checked");
+        $(".sprite_unchecked").eq(click_num).addClass("sprite_checked");
+        $(".sta").val(click_num*1+1);
+    })
+</script>
+<script>
+    $("#one").click(function(){
+        $(".sta").val('1');
+    })
+
+    $("#two").click(function(){
+        $(".sta").val('2');
+    })
+
     $(".sign").click(function(){
         var loading = weui.loading('请稍后', {
           className: 'custom-classname'
         });
+        var flg = $(".sta").val();
         $.ajax({
         url:"/index/sign/begin",
         type:"POST",
-        data:'',
+        data:{flg:flg},
         dataType:'JSON',
         success:function (data) {
+          
           if(data['status']==1){
             loading.hide(function() {
                });
@@ -182,10 +244,10 @@
   //实例化一个plupload上传对象
   var uploader = new plupload.Uploader({
       browse_button: ['selectfiles'], //触发文件选择对话框的按钮，为那个元素id
-      url: 'api.youxingku.cc/signpact/uploadstamp.php', //服务器端的上传页面地址
+      url: 'http://test.api.youxingku.cn/signpact/uploadstamp.php', //服务器端的上传页面地址
       flash_swf_url: 'js/Moxie.swf', //swf文件，当需要使用swf方式进行上传时需要配置该参数
       silverlight_xap_url: 'js/Moxie.xap', //silverlight文件，当需要使用silverlight方式进行上传时需要配置该参数
-      multipart_params:{yxkuid:'8798'}
+      multipart_params:{yxkuid:"<?php echo $myinfo['wquid']; ?>"}
   });
 
   uploader.init();
@@ -197,11 +259,43 @@
   });
 
   uploader.bind('FileUploaded', function (uploader, file, responseObject) {
-   console.log(responseObject)
+    var stamp = JSON.parse(responseObject.response);
+      if(stamp.status==1){
+        var stampid = stamp.stampid;
+        $.ajax({
+            url:"/index/sign/mystamp",
+            type:"POST",
+            data:{stamp:stampid,wquid:"<?php echo $myinfo['wquid']; ?>"},
+            dataType:'JSON',
+            success:function (data) {
+                loading.hide(function() {
+            });     
+            if(data['status']==1){
+                weui.toast('操作成功', {
+                    duration: 1500,
+                    className: 'custom-classname',
+                    callback: function(){
+                        window.location.href = '/index/sign/medal';
+                    }
+                });
+            }else{
+                weui.alert(data['msg']);
+            }
+            }
+        });
+      }else{
+        loading.hide(function() {
+        });
+          weui.alert(stamp.msg);
+      }
+
+
 
   });
 
-
+  $(".fujian").click(function(){
+      weui.alert('请PC端操作！');
+  })
 
 
 </script>

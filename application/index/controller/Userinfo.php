@@ -16,17 +16,16 @@ class Userinfo extends Controller{
       $wechat = new Wechat_accredit($appid,$appsecret,$redirect_uri);
       $info = $wechat -> getAccessToken($code);
       if($info){
-        $openid = $info['openid'];
-        $access_token = $info['access_token'];
+        $openid = isset($info['openid'])?$info['openid']:'';
+        $access_token = isset($info['access_token'])?$info['access_token']:'';
       }
       $wechatinfo = $wechat -> get_user_info($access_token,$openid);
       if($wechatinfo){
         //之后换成unionid
-        // $wxid = $wechatinfo['unionid'];
+        $wxid = $wechatinfo['unionid'];
         $url = '/inter/index/userdetail';
-        // $wxid = $wechatinfo['openid'];
-        // $wxid = 565321;
-        $wxid = rand(111111,999999);
+        
+        // $wxid = rand(111111,999999);
         
         $data['wxpcopenid'] = $wxid;
         $sinfo = request_post($url,$data);
@@ -54,6 +53,8 @@ class Userinfo extends Controller{
           Session::set('openid',$wxid);
           $this -> redirect('/index/userinfo/mylogin');
         }
+      }else{
+        return "<script>alert('授权错误！')</script>";
       }
   }
   public function mylogin()

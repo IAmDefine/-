@@ -1,4 +1,4 @@
-<?php if (!defined('THINK_PATH')) exit(); /*a:3:{s:82:"E:\xampp\htdocs\wechat\public/../application/index\view\pacttype\workexc_type.html";i:1503648170;s:70:"E:\xampp\htdocs\wechat\public/../application/index\view\head_type.html";i:1504079850;s:71:"E:\xampp\htdocs\wechat\public/../application/index\view\pub_button.html";i:1504003892;}*/ ?>
+<?php if (!defined('THINK_PATH')) exit(); /*a:3:{s:82:"E:\xampp\htdocs\wechat\public/../application/index\view\pacttype\workexc_type.html";i:1504243840;s:70:"E:\xampp\htdocs\wechat\public/../application/index\view\head_type.html";i:1504079850;s:71:"E:\xampp\htdocs\wechat\public/../application/index\view\pub_button.html";i:1504003892;}*/ ?>
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
@@ -7,6 +7,7 @@
     <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <link rel="stylesheet" href="/css/pact/common.css">
     <script src="/js/jquery-1.8.3.min.js"></script>
+    <link rel="stylesheet" href="/css/weui.min.css">
 </head>
 <body>
 <div class="container">
@@ -74,6 +75,7 @@
         window.location.href='/index/sign/myinfo';
     })
 </script>
+ <?php if(!(empty($pact) || (($pact instanceof \think\Collection || $pact instanceof \think\Paginator ) && $pact->isEmpty()))): if($pact['states']!=4): ?>
     <div class="content">
     <div>
         <h1 class="text-color-red">【签约提示与说明】</h1>
@@ -279,7 +281,11 @@
         </div>
     </div>
 </div>
-<?php if(!(empty($pact) || (($pact instanceof \think\Collection || $pact instanceof \think\Paginator ) && $pact->isEmpty()))): if($pact['states']==2): ?>
+<?php else: ?>
+<div class="weui-btn-area">
+        <a class="weui-btn weui-btn_warn" id="loginform" href="<?php echo $pact['docurl']; ?>">查看合同</a>
+    </div>
+<?php endif; endif; if(!(empty($pact) || (($pact instanceof \think\Collection || $pact instanceof \think\Paginator ) && $pact->isEmpty()))): if($pact['states']==2): ?>
 <footer class="footer sign_up" style="position:fixed">确认签约</footer>
 <?php elseif($pact['states']==3): ?>
 <footer class="footer reupinfo" eid="<?php echo $pact['id']; ?>" style="position:fixed">重新申请</footer>

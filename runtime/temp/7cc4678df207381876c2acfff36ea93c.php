@@ -1,4 +1,4 @@
-<?php if (!defined('THINK_PATH')) exit(); /*a:1:{s:77:"E:\xampp\htdocs\wechat\public/../application/index\view\userinfo\mylogin.html";i:1504145556;}*/ ?>
+<?php if (!defined('THINK_PATH')) exit(); /*a:1:{s:77:"E:\xampp\htdocs\wechat\public/../application/index\view\userinfo\mylogin.html";i:1504168466;}*/ ?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -13,7 +13,7 @@
 			float: right;
 			margin-right: 17px;
 			margin-top: 10px;
-            font-size:10px; 
+            font-size:13px; 
 		}
 	</style>
 </head>
@@ -54,7 +54,7 @@
 </div>
 </form>
 <div class="weui-btn-area">
-    <a class="weui-btn weui-btn_warn" id="loginform" href="javascript:" id="showTooltips">确定</a>
+    <a class="weui-btn weui-btn_warn" id="loginform" href="javascript:">确定</a>
 </div>
 	<a class="bind sty" href="/index/binduser/bind">我已有账号，立即绑定</a>
 </body>
