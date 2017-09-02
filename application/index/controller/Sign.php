@@ -247,6 +247,10 @@ class Sign extends Base
     public function signup()
     {
       $sid = Session::get('sid');
+      $res = $this -> con_datas();
+      if($res){
+        return array('status'=>4,'msg'=>'您已提交过签约！');
+      }
 
       $post_info = array_filter($_POST);
       $post_info['sid'] = $sid;

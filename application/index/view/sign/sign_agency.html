@@ -26,7 +26,7 @@
          <div class="weui-cell">
             <div class="weui-cell__hd"><label class="weui-label">地址：</label></div>
             <div class="weui-cell__bd">
-                <input class="weui-input" type="text" value="{$sinfo['addr'] |default=''}" name="workaddr" placeholder="请输入公司地址"/>
+                <input class="weui-input" required pattern="" emptyTips="请输入地址" type="text" value="{$sinfo['addr'] |default=''}" name="workaddr" placeholder="请输入公司地址"/>
             </div>
         </div>
 
@@ -45,20 +45,20 @@
      <div class="weui-cell">
             <div class="weui-cell__hd"><label class="weui-label">证件号码：</label></div>
             <div class="weui-cell__bd">
-                <input class="weui-input" type="text" value="{$sinfo['idno']}" name="cardnum"/>
+                <input class="weui-input"  required pattern="" emptyTips="请输入证件号码" type="text" value="{$sinfo['idno']}" name="cardnum"/>
             </div>
         </div>
 
          <div class="weui-cell">
             <div class="weui-cell__hd"><label class="weui-label">电子邮箱：</label></div>
             <div class="weui-cell__bd">
-                <input class="weui-input" type="text" name="workemail" value="{$sinfo['email']}" placeholder="请输入邮箱"/>
+                <input class="weui-input" required pattern="REG_EM" emptyTips="请输入邮箱" notMatchTips="请输入正确的邮箱" type="text" name="workemail" value="{$sinfo['email']}" placeholder="请输入邮箱"/>
             </div>
         </div>
          <div class="weui-cell">
             <div class="weui-cell__hd"><label class="weui-label">联系人电话：</label></div>
             <div class="weui-cell__bd">
-                <input class="weui-input" type="number" name='worktel' value="{$Think.session.wx_userinfo['mobile']}" placeholder="请输入电话"/>
+                <input class="weui-input" required pattern="[0-9]{11}" emptyTips="请输入手机号" notMatchTips="请输入正确的手机号" type="number" name='worktel' value="{$Think.session.wx_userinfo['mobile']}" placeholder="请输入电话"/>
             </div>
         </div>
 
@@ -83,20 +83,20 @@
         <div class="weui-cell">
                 <div class="weui-cell__hd"><label class="weui-label">开户名称：</label></div>
                 <div class="weui-cell__bd">
-                    <input class="weui-input" type="text" name="openname" placeholder="请输入开户名称"/>
+                    <input class="weui-input" required pattern="" emptyTips="请输入开户名称" type="text" name="openname" placeholder="请输入开户名称"/>
                 </div>
         </div>
 
       <div class="weui-cell">
          <div class="weui-cell__hd"><label class="weui-label">开户银行：</label></div>
          <div class="weui-cell__bd">
-             <input class="weui-input" type="text" value="{$sinfo['openbank']|default=''}" name="openbank" placeholder="请输入开户银行"/>
+             <input class="weui-input" type="text" required pattern="" emptyTips="请输入开户银行" value="{$sinfo['openbank']|default=''}" name="openbank" placeholder="请输入开户银行"/>
          </div>
      </div>
       <div class="weui-cell">
          <div class="weui-cell__hd"><label class="weui-label">银行账户：</label></div>
          <div class="weui-cell__bd">
-             <input class="weui-input" type="text" value="{$sinfo['account']|default=''}" name="openacct" placeholder="请输入银行账户"/>
+             <input class="weui-input" type="text" required pattern="" emptyTips="请输入银行账户" value="{$sinfo['account']|default=''}" name="openacct" placeholder="请输入银行账户"/>
          </div>
      </div>
         </div>
@@ -171,80 +171,40 @@
 
     //提交表单
     $('.up').click(function(){
-      var info = $("form").serialize()
-      info = decodeURIComponent(info,true);
-      var v = via(info);
-        if(v==11){
-            weui.alert('请完善信息！');
-            return;
-        }else if(v==2){
-            weui.alert('请输入正确的身份证号码！');
-            return;
-        }else if(v==3){
-            weui.alert('请输入正确的邮箱！');
-            return;
-        }else if(v==4){
-            weui.alert('请输入地址！');
-            return;
-        }else if(v==5){
-            weui.alert('请输入正确的手机号');
-            return;
-        }
-      $.ajax({
-        url:"/index/sign/signup",
-        type:"POST",
-        data:info,
-        dataType:'JSON',
-        success:function (data) {
-          if(data['status']==1){
-            weui.toast('操作成功', {
-                  duration: 1500,
-                  className: 'custom-classname',
-                  callback: function(){
-                     window.location.href = '/index/sign/pact_type';
-                 }
+        var info = $("form").serialize()
+        info = decodeURIComponent(info,true);
+        weui.form.validate('#form', function (error) {
+        if (!error) {
+            var loading = weui.loading('提交中...');
+            $.ajax({
+                url:"/index/sign/signup",
+                type:"POST",
+                data:info,
+                dataType:'JSON',
+                success:function (data) {
+                loading.hide();
+                if(data['status']==1){
+                    weui.toast('操作成功', {
+                        duration: 1500,
+                        className: 'custom-classname',
+                        callback: function(){
+                            window.location.href = '/index/sign/pact_type';
+                        }
+                    });
+                }else if(data['status']==4){
+                    weui.alert(data['msg']);
+                }else if(data['status']==3){
+                    weui.alert(data['msg']);
+                }
+                }
             });
-          }else{
-            weui.alert(data['msg']);
-          }
         }
-      });
+    }, {
+        regexp: {
+            EM: /^[a-z0-9]+([._\\-]*[a-z0-9])*@([a-z0-9]+[-a-z0-9]*[a-z0-9]+.){1,63}[a-z0-9]+$/
+        }
+    });
     })
 
-    function via(info){
-        //验证表单
-        str=info.split("&");
-        var all = [];
-        for(var i in str){
-             all[i] = str[i].split('=');
-        }
-       for(var j in all){
-           for(var c in all[j]){
-               if(!all[j][1]){
-                   return 11;
-               }
-           }
-       }
-    var card = $("input[name='cardnum']").val(); 
-    var email = $("input[name='workemail']").val();
-    var workaddr = $("input[name='workaddr']").val();
-    var worktel = $("input[name='worktel']").val();
-    var reg = /(^\d{15}$)|(^\d{18}$)|(^\d{17}(\d|X|x)$)/;
-    var em = /^[a-z0-9]+([._\\-]*[a-z0-9])*@([a-z0-9]+[-a-z0-9]*[a-z0-9]+.){1,63}[a-z0-9]+$/;
-    var t = /^1(3|4|5|7|8)\d{9}$/;
-    if(workaddr==''){
-        return 4;
-    }
-    if(!reg.test(card)){
-        return 2;
-    }
-    if(!em.test(email)){
-        return 3;
-    }
-    if(!t.test(worktel)){
-        return 5;
-    }
-        return true;
-    }
   </script>
 </html>

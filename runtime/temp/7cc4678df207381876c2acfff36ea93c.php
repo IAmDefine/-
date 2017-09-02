@@ -1,4 +1,4 @@
-<?php if (!defined('THINK_PATH')) exit(); /*a:1:{s:77:"E:\xampp\htdocs\wechat\public/../application/index\view\userinfo\mylogin.html";i:1504260434;}*/ ?>
+<?php if (!defined('THINK_PATH')) exit(); /*a:1:{s:77:"E:\xampp\htdocs\wechat\public/../application/index\view\userinfo\mylogin.html";i:1504321005;}*/ ?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -59,7 +59,7 @@
 	<a class="bind sty" href="/index/binduser/bind">我已有账号，立即绑定</a>
 </body>
 <script>
-    var wait = 60;
+     wait = 60;
     function time(o) {
         if (wait == 0) {
             o.removeAttribute("disabled");
@@ -92,9 +92,13 @@
             dataType:'JSON',
             success:function (data) {
             // console.log(data);return;
-            if(!data){
+            if(data==2){
                 weui.topTips('验证码发送失败');
                 return;
+                }else if(data==3){
+                    wait=0
+                    weui.alert('该手机号已注册！');
+                    return;
                 }
             }
         })
@@ -141,11 +145,9 @@ $("#loginform").click(function () {
            if(data==1){
                weui.toast('操作成功', 1500);
                setTimeout(function() {
-								 //注册之后跳转到点击的入口链接（比如点击的合作代理，注册后会跳转到合作代理）
+			   //注册之后跳转到点击的入口链接（比如点击的合作代理，注册后会跳转到合作代理）
                window.location.href = "<?php echo \think\Session::get('url_goal'); ?>";
                }, 1500);
-           }else if(data==2){
-               weui.alert('手机号已注册');
            }
         }
     })

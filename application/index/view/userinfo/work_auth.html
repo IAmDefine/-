@@ -406,6 +406,10 @@
                      window.location.href = '/index/sign/myinfo';
                  }
             });
+            }else if(data==2){
+                loading.hide(function() {
+               });
+                weui.alert('您已提交过信息！');
             }
            }
        });
@@ -421,8 +425,8 @@
         var entrus = $("input[name='entrus']").val(); 
         var admcard = $("input[name='admcard']").val(); 
         var reveside = $("input[name='reveside']").val(); 
-        var handid = $("input[name='handid']").val(); 
-        var credtype = $("input[name='credtype']").val(); 
+        var handid = $("input[name='handid']").val();
+        var credtype = $("input[name='credtype']").val();
         var groupcode = $("input[name='groupcode']").val(); 
         var reg = /(^\d{15}$)|(^\d{18}$)|(^\d{17}(\d|X|x)$)/;
         var em = /^[a-z0-9]+([._\\-]*[a-z0-9])*@([a-z0-9]+[-a-z0-9]*[a-z0-9]+.){1,63}[a-z0-9]+$/;

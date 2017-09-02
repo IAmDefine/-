@@ -65,15 +65,19 @@ class Userinfo extends Controller{
   public function getcode()
   {
     $mobile = input('mobile');
+    $r = $this->select_u($mobile);
+    if($r==1){
+      return 3;
+    }
     $authcode = input('authcode');
     $url = '/aliyun/regcode.php';
     $data['mobile'] = $mobile;
     $data['authcode'] = $authcode;
     $cinfo = request_post($url,$data);
     if($cinfo['msg']=='ok'){
-      return true;
+      return 1;
     }else{
-      return false;
+      return 2;
     }
   }
 
@@ -83,10 +87,6 @@ class Userinfo extends Controller{
       $data = !empty($_POST)?$_POST:'';
       if(!$data){
         return false;
-      }
-      $r = $this->select_u($data['mobile']);
-      if($r==1){
-        return 2;
       }
       $url ='/inter/index/register';
       $res = request_post($url,$data);
@@ -155,6 +155,10 @@ class Userinfo extends Controller{
   public function addauth()
   {
     $info = $_POST;
+    $res = $this -> select_user();
+   if($res==1){
+     return 2;
+   }
     $info = array_filter($info);
     $uid = Session::get('wx_userinfo');
     $url = '/inter/star/starinfoadd';
@@ -168,6 +172,22 @@ class Userinfo extends Controller{
      return 0;
     }
   }
+
+  //查询是否有明星信息
+  private function select_user()
+  {
+    $wx_userinfo = Session::get('wx_userinfo');
+    $uid = $wx_userinfo['uid'];
+    $url = "/inter/star/startinfolook";
+    $data['uid'] = $uid;
+    $res = request_post($url,$data);
+    if($res['status']==1){
+      return 1;
+    }else{
+      return 2;
+    }
+  }
+
 
   //编辑认证信息
   public function edit_auth()

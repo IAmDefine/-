@@ -1,4 +1,4 @@
-<?php if (!defined('THINK_PATH')) exit(); /*a:1:{s:75:"E:\xampp\htdocs\wechat\public/../application/index\view\sign\sign_work.html";i:1504151128;}*/ ?>
+<?php if (!defined('THINK_PATH')) exit(); /*a:1:{s:75:"E:\xampp\htdocs\wechat\public/../application/index\view\sign\sign_work.html";i:1504336043;}*/ ?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -40,31 +40,31 @@
                 <div class="weui-cell ">
                     <div class="weui-cell__hd "><label class="weui-label ">投资人</label></div>
                     <div class="weui-cell__bd ">
-                        <input class="weui-input " style="text-align: -webkit-right; " type="text " name="investor" placeholder="请输入投资人姓名" />
+                        <input class="weui-input " required pattern="" emptyTips="请输入投资人" style="text-align: -webkit-right; " type="text " name="investor" placeholder="请输入投资人姓名" />
                     </div>
                 </div>
                 <div class="weui-cell ">
                     <div class="weui-cell__hd "><label class="weui-label ">联系人</label></div>
                     <div class="weui-cell__bd ">
-                        <input class="weui-input " style="text-align: -webkit-right; " name="workman" type="text " placeholder="请输入联系人姓名" />
+                        <input class="weui-input " required pattern="" emptyTips="请输入联系人" style="text-align: -webkit-right; " name="workman" type="text " placeholder="请输入联系人姓名" />
                     </div>
                 </div>
                 <div class="weui-cell ">
                     <div class="weui-cell__hd "><label class="weui-label ">联系地址</label></div>
                     <div class="weui-cell__bd ">
-                        <input class="weui-input " style="text-align: -webkit-right; " type="text " name="workaddr" placeholder="请输入联系地址" value="<?php echo (isset($sinfo['addr'] ) && ($sinfo['addr']  !== '')?$sinfo['addr'] :''); ?>"/>
+                        <input class="weui-input " required pattern="" emptyTips="请输入联系地址" style="text-align: -webkit-right; " type="text " name="workaddr" placeholder="请输入联系地址" value="<?php echo (isset($sinfo['addr'] ) && ($sinfo['addr']  !== '')?$sinfo['addr'] :''); ?>"/>
                     </div>
                 </div>
                 <div class="weui-cell ">
                     <div class="weui-cell__hd "><label class="weui-label ">联系电话</label></div>
                     <div class="weui-cell__bd ">
-                        <input class="weui-input " style="text-align: -webkit-right; " name="worktel" type="number " placeholder="请输入联系电话" value="<?php echo \think\Session::get('wx_userinfo')['mobile']; ?>"/>
+                        <input class="weui-input " required pattern="[0-9]{11}" emptyTips="请输入手机号" notMatchTips="请输入正确的手机号" style="text-align: -webkit-right; " name="worktel" type="number " placeholder="请输入联系电话" value="<?php echo \think\Session::get('wx_userinfo')['mobile']; ?>"/>
                     </div>
                 </div>
                 <div class="weui-cell ">
                     <div class="weui-cell__hd "><label class="weui-label ">电子邮箱</label></div>
                     <div class="weui-cell__bd ">
-                        <input class="weui-input " style="text-align: -webkit-right; " name="workemail" type="text " placeholder="请输入电子邮箱" value="<?php echo (isset($sinfo['email'] ) && ($sinfo['email']  !== '')?$sinfo['email'] :''); ?>"/>
+                        <input class="weui-input " required pattern="REG_EM" emptyTips="请输入邮箱" notMatchTips="请输入正确的邮箱" style="text-align: -webkit-right; " name="workemail" type="text " placeholder="请输入电子邮箱" value="<?php echo (isset($sinfo['email'] ) && ($sinfo['email']  !== '')?$sinfo['email'] :''); ?>"/>
                     </div>
                 </div>
             </div>
@@ -120,7 +120,7 @@
                 <div class="weui-cell ">
                     <div class="weui-cell__hd "><label class="weui-label ">身份证号码</label></div>
                     <div class="weui-cell__bd ">
-                        <input class="weui-input " style="text-align: -webkit-right; " name="cardnum" value="<?php echo $sinfo['idno']; ?>"/>
+                        <input class="weui-input " required pattern="" emptyTips="请输入证件号码" style="text-align: -webkit-right; " name="cardnum" value="<?php echo $sinfo['idno']; ?>"/>
                     </div>
                 </div>
             </div>
@@ -152,19 +152,19 @@
             <div class="weui-cell ">
                 <div class="weui-cell__hd "><label class="weui-label ">开户名称</label></div>
                 <div class="weui-cell__bd ">
-                    <input class="weui-input " style="text-align: -webkit-right;" name="openname" type="text " placeholder="请输入开户名称 " />
+                    <input class="weui-input " style="text-align: -webkit-right;" name="openname" type="text " placeholder="请输入开户名称"/>
                 </div>
             </div>
             <div class="weui-cell ">
                 <div class="weui-cell__hd "><label class="weui-label ">开户银行</label></div>
                 <div class="weui-cell__bd ">
-                    <input class="weui-input " style="text-align: -webkit-right; " name="openbank" type="text " placeholder="请输入开户银行 " />
+                    <input class="weui-input " style="text-align: -webkit-right; " name="openbank" type="text " required pattern="" emptyTips="请输入开户银行" placeholder="请输入开户银行 " />
                 </div>
             </div>
             <div class="weui-cell ">
                 <div class="weui-cell__hd "><label class="weui-label ">银行账户</label></div>
                 <div class="weui-cell__bd ">
-                    <input class="weui-input " style="text-align: -webkit-right; " name="openacct" type="number " pattern="[0-9]* " placeholder="请输入银行账户" />
+                    <input class="weui-input " style="text-align: -webkit-right; " name="openacct" type="number " placeholder="请输入银行账户" />
                 </div>
             </div>
         </div>
@@ -172,86 +172,53 @@
     </div>
     <input type="hidden" name="type" value="<?php echo $types; ?>">
  </form>
-    <footer class="footer up">保存并上传</footer>
+    <footer class="footer up" style="z-index:100">保存并上传</footer>
     </div>
 </body>
 <script>
     //提交表单
     $('.up').click(function(){
-      var info = $("form").serialize()
-      info = decodeURIComponent(info,true);
-      var v = via(info);
-        if(v==11){
-            weui.alert('请完善信息！');
-            return;
-        }else if(v==2){
-            weui.alert('请输入正确的身份证号码！');
-            return;
-        }else if(v==3){
-            weui.alert('请输入正确的邮箱！');
-            return;
-        }else if(v==4){
-            weui.alert('请输入地址！');
-            return;
-        }else if(v==5){
-            weui.alert('请输入正确的手机号');
-            return;
-        }
-      $.ajax({
-        url:"/index/sign/signup",
-        type:"POST",
-        data:info,
-        dataType:'JSON',
-        success:function (data) {
-          if(data['status']==1){
-            weui.toast('操作成功', {
-                  duration: 1500,
-                  className: 'custom-classname',
-                  callback: function(){
-                    window.location.href='/index/sign/pact_type'
-                 }
-            });
-          }else{
-            weui.alert(data['msg']);
-          }
-        }
-      });
+        var info = $("form").serialize()
+        info = decodeURIComponent(info,true);
+        weui.form.validate('#form', function (error) {
+            if (!error) {
+                var openname = $("input[name='openname']").val();
+                var openbank = $("input[name='openbank']").val();
+                var openacct = $("input[name='openacct']").val();
+                if(openname==''){
+                    weui.topTips('请输入开户名称');return;
+                }
+                if(openbank==''){
+                    weui.topTips('请输入开户银行');return;
+                }
+                if(openacct==''){
+                    weui.topTips('请输入银行账户');return;
+                }
+                $.ajax({
+                    url:"/index/sign/signup",
+                    type:"POST",
+                    data:info,
+                    dataType:'JSON',
+                    success:function (data) {
+                    if(data['status']==1){
+                        weui.toast('操作成功', {
+                            duration: 1500,
+                            className: 'custom-classname',
+                            callback: function(){
+                                window.location.href='/index/sign/pact_type'
+                            }
+                        });
+                    }else{
+                        weui.alert(data['msg']);
+                    }
+                        }
+                });
+            }
+        }, {
+            regexp: {
+                EM: /^[a-z0-9]+([._\\-]*[a-z0-9])*@([a-z0-9]+[-a-z0-9]*[a-z0-9]+.){1,63}[a-z0-9]+$/
+            }
+        });
     })
-
-    function via(info){
-        //验证表单
-        str=info.split("&");
-        var all = [];
-        for(var i in str){
-             all[i] = str[i].split('=');
-        }
-       for(var j in all){
-           for(var c in all[j]){
-               if(!all[j][1]){
-                   return 11;
-               }
-           }
-       }
-    var card = $("input[name='cardnum']").val(); 
-    var email = $("input[name='workemail']").val();
-    var workaddr = $("input[name='workaddr']").val();
-    var worktel = $("input[name='worktel']").val();
-    var reg = /(^\d{15}$)|(^\d{18}$)|(^\d{17}(\d|X|x)$)/;
-    var em = /^[a-z0-9]+([._\\-]*[a-z0-9])*@([a-z0-9]+[-a-z0-9]*[a-z0-9]+.){1,63}[a-z0-9]+$/;
-    var t = /^1(3|4|5|7|8)\d{9}$/;
-    if(workaddr==''){
-        return 4;
-    }
-    if(!reg.test(card)){
-        return 2;
-    }
-    if(!em.test(email)){
-        return 3;
-    }
-    if(!t.test(worktel)){
-        return 5;
-    }
-        return true;
-    }
 </script>
 </html>

@@ -287,6 +287,10 @@
                      window.location.href = '/index/sign/myinfo';
                  }
             });
+            }else if(data==2){
+                loading.hide(function() {
+               });
+                weui.alert('您已提交过信息！');
             }
            }
        });

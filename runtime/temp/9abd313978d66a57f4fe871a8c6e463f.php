@@ -1,4 +1,4 @@
-<?php if (!defined('THINK_PATH')) exit(); /*a:1:{s:79:"E:\xampp\htdocs\wechat\public/../application/index\view\userinfo\work_auth.html";i:1504146888;}*/ ?>
+<?php if (!defined('THINK_PATH')) exit(); /*a:1:{s:79:"E:\xampp\htdocs\wechat\public/../application/index\view\userinfo\work_auth.html";i:1504318852;}*/ ?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -407,6 +407,10 @@
                      window.location.href = '/index/sign/myinfo';
                  }
             });
+            }else if(data==2){
+                loading.hide(function() {
+               });
+                weui.alert('您已提交过信息！');
             }
            }
        });
