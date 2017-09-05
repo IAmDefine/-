@@ -22,8 +22,8 @@ return [
     //微信回掉地址
     'redirect_uri'           =>'http://wx.youxingku.com/index/userinfo/login',
     //接口域名
-    'apidomain'            =>'api.youxingku.cc',
-    // 'apidomain'            =>'http://test.api.youxingku.cn',
+    // 'apidomain'            =>'api.youxingku.cc',
+    'apidomain'            =>'http://test.api.youxingku.cn',
 
     // 应用命名空间
     'app_namespace'          => 'app',
