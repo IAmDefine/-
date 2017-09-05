@@ -358,11 +358,17 @@ class Sign extends Base
     {
       //查询明星信息
       $myinfo = $this->selectinfo();
+     
       if(!$myinfo['wquid']){
          $mobile = Session::get('wx_userinfo')['mobile'];
          $sid = $myinfo['id'];
          $a = $this->createwquid($myinfo,$mobile,$sid);
-           
+          if($a['status']==3){
+            $this -> assign('wqinfo',$a);
+            // echo $a['msg'];
+            // echo "<script>alert(". $a['msg'] .")</script>";die;
+          }
+        
          $myinfo = $this->selectinfo();
       }
       if(!$myinfo['stampurl']){

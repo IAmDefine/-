@@ -158,7 +158,16 @@
     </footer>
     </div>
     <input type="hidden" value='1' class="sta">
+   
 </body>
+
+{if condition="!empty($wqinfo)"}
+<script>
+    alert("{$wqinfo['msg']}");
+    window.location.href='/index/sign/pact_type';
+    window.close()
+</script>
+{/if}
 <script>
     var click_num;
     $(".sprite_unchecked").eq(0).addClass("sprite_checked");
