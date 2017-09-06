@@ -87,11 +87,20 @@ class Sign extends Base
     public function pact_type()
     {
       $pactinfo = $this -> con_datas();
-     
+    
       if(!$pactinfo){
         return view('/pacttype/no_pact');die;
       }
-      $sinfo = $this ->selectinfo();
+     // $sinfo = $this ->selectinfo();
+     //明星信息
+     $wx_userinfo = Session::get('wx_userinfo');
+     $uid = $wx_userinfo['uid'];
+     $mobile = $wx_userinfo['mobile'];
+     $data['uid'] = $uid;
+     $url = '/inter/star/startinfolook';
+     $starinfo = request_post($url,$data);
+     $sinfo = $starinfo['data'];
+
       $ty = $pactinfo['types'];//合同类型 1独家协议 2肖像独家 3代理协议
       $signtype = $sinfo['signtype'];
       $this-> assign('pact',$pactinfo);
@@ -150,7 +159,7 @@ class Sign extends Base
     //   }
     // }
     //查看个人信息
-    private function selectinfo()
+    public function selectinfo()
     {
       $sid = Session::get('sid');
       if($sid){
@@ -365,8 +374,7 @@ class Sign extends Base
          $a = $this->createwquid($myinfo,$mobile,$sid);
           if($a['status']==3){
             $this -> assign('wqinfo',$a);
-            // echo $a['msg'];
-            // echo "<script>alert(". $a['msg'] .")</script>";die;
+           
           }
         
          $myinfo = $this->selectinfo();

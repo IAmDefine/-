@@ -51,6 +51,7 @@
         <p>（3）优星库平台在审核本协议过程中要求您补充提供的必要资料。</p>
         <h2>2.任何时候，如您需核实优星库平台的证照资料，请见优星库平台首页的底端。</h2>
     </div>
+    {if condition="$pact['states']!=6&&$pact['states']!=3"}
     <div class="content-header">
         <h1 class="text-bold text-center">肖像照片独家协议 - 个人&优星库</h1>
         <p class="text-size-26 box-margin-20">
@@ -225,6 +226,7 @@
             <!--<h2 class="line-height-50">法定代表人/授权代表（签字）：</h2>-->
         </div>
     </div>
+    {/if}
 </div>
 {else /}
 <div class="weui-btn-area">
