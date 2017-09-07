@@ -205,7 +205,17 @@ class Userinfo extends Controller{
 
   public function doeditauth()
   {
-    $data = $_POST;
+    $data = $_POST; 
+
+    $wx_userinfo = Session::get('wx_userinfo');
+    $uid = $wx_userinfo['uid'];
+    $url = "/inter/star/startinfolook";
+    $data['uid'] = $uid;
+    $res = request_post($url,$data);
+    if($res['data']['ifauth']!=4){
+      return 2;
+    }
+
     $data = array_filter($data);
     $data['ifauth'] = 3;
     $url = '/inter/star/startinfoedit';

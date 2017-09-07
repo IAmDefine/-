@@ -43,6 +43,7 @@
         .submit_btn{
           width: 100%;
           height: 50px;
+          position: relative;
         }
         .photo_con{
             width: 48%;
@@ -92,25 +93,25 @@
         </div>
     </div>
 </div>    
-    <div class="weui-uploader" style="margin-left:11px;margin-top:20px">
+    <div class="weui-uploader" style="margin-left:11px;margin-top:20px;">
         <div class="weui-uploader__bd">
           <div class="photo_con" onclick="setvar(1)">
             <div class="weui-uploader__input-box" style="width:100%;height:114px" id="selectfiles1" >
-               <img src="{$info['admcard']|default='/imgs/add_icon.png'}" id="img1">
+               <img src="{$info['admcard']|default='/imgs/add_icon.png'}" id="img1" style="width:100%">
                <input type="hidden" name="admcard" value="{$info['admcard']}" id="imgurl1">
             </div>
             <span style="margin-left:40px">身份证正面</span>
           </div>
           <div class="photo_con" onclick="setvar(2)">
             <div class="weui-uploader__input-box" style="width:100%;height:114px" id="selectfiles2" >
-                <img src="{$info['reveside']|default='/imgs/add_icon.png'}" id="img2">
+                <img src="{$info['reveside']|default='/imgs/add_icon.png'}" id="img2" style="width:100%">
                 <input type="hidden" name="reveside" value="{$info['reveside']}"  id="imgurl2">
             </div>
             <span style="margin-left:40px">身份证反面</span>
          </div>
          <div class="photo_con" onclick="setvar(3)">
             <div class="weui-uploader__input-box" style="width:100%;height:114px" id="selectfiles3">
-                <img src="{$info['handid']|default='/imgs/add_icon.png'}" id="img3">
+                <img src="{$info['handid']|default='/imgs/add_icon.png'}" id="img3" style="width:100%;">
                 <input type="hidden" name="handid" value="{$info['handid']}" id="imgurl3">
             </div>
             <span>手持身份证正面照</span>
@@ -120,7 +121,7 @@
     <input type="hidden" name="id" value="{$info['id']}">
 </form>
 
-<button class="submit_btn" id="up">保存并上传</button>
+<button class="submit_btn" id="up" style="z-index:10">保存并上传</button>
 </body>
 <script>
     //上传
@@ -285,6 +286,10 @@
                      window.location.href = '/index/sign/myinfo';
                  }
             });
+            }else if(data==2){
+                loading.hide(function() {
+               });
+                weui.alert('您已提交过信息！');
             }
            }
        });

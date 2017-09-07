@@ -27,7 +27,7 @@ class Sign extends Base
           return view('/sign/transfer');
           // $this->redirect('/index/sign/pact_type');die;
         }
-        //1个人 2工作室 3经纪公司        
+        //1个人 2工作室 3经纪公司
         $signtype = $starinfo['data']['signtype'];
         if($signtype==1&&$ty==1){       //跳转到代理协议-个人
           return view('/contract/per_contract');
@@ -244,10 +244,21 @@ class Sign extends Base
     public function editsign()
     {
       $data = $_POST;
+      $sid = Session::get('sid');
+      $url = '/inter/star/agreelist';
+      $data['sid'] = $sid;
+      $res = request_post($url,$data);       
+        if($res['status']==1){
+          if($res['data']['data'][0]['states']!=3){
+          return 2;          
+          }
+        }
+
+
       $data['states'] = 1;
       $url = '/inter/star/auditagree';
       $res = request_post($url,$data);
-      return $res;
+      return 1;
     }
 
 

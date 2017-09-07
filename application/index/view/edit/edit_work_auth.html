@@ -120,35 +120,35 @@
         <div class="weui-grids" style="margin-bottom:1.5rem;">
             <a href="javascript:;" class="weui-grid" style="width:50%;height:180px" onclick="setvar(1)" id="selectfiles1">
                 <div class="">
-                    <img src="{$info['tradcert']|default='/imgs/add_icon.png'}" id="img1" alt="">
+                    <img src="{$info['tradcert']|default='/imgs/add_icon.png'}" id="img1" style="width:100%">
                     <input type="hidden" name="tradcert" value="{$info['tradcert']|default=''}" id="imgurl1">
                 </div>
                 <p class="weui-grid__label">营业执照</p>
             </a>
             <a href="javascript:;" class="weui-grid" style="width:50%;" onclick="setvar(2)" id="selectfiles2">
                 <div class="">
-                    <img src="{$info['entrus']|default='/imgs/add_icon.png'}" alt="" id="img2">
+                    <img src="{$info['entrus']|default='/imgs/add_icon.png'}" style="width:100%" id="img2">
                     <input type="hidden" name="entrus" value="{$info['entrus']|default=''}" id="imgurl2">
                 </div>
                 <p class="weui-grid__label">企业委托书</p>
             </a>
             <a href="javascript:;" class="weui-grid" style="width:50%;" onclick="setvar(3)" id="selectfiles3">
                 <div class="">
-                    <img src="{$info['admcard']|default='/imgs/add_icon.png'}" alt="" id="img3">
+                    <img src="{$info['admcard']|default='/imgs/add_icon.png'}" style="width:100%" id="img3">
                     <input type="hidden" name="admcard" value="{$info['admcard']|default=''}" id="imgurl3">
                 </div>
                 <p class="weui-grid__label">身份证正面</p>
             </a>
             <a href="javascript:;" class="weui-grid" style="width:50%;" onclick="setvar(4)" id="selectfiles4">
                 <div class="">
-                    <img src="{$info['reveside']|default='/imgs/add_icon.png'}" alt="" id="img4">
+                    <img src="{$info['reveside']|default='/imgs/add_icon.png'}" style="width:100%" id="img4">
                     <input type="hidden" name="reveside" value="{$info['reveside']|default=''}" id="imgurl4">
                 </div>
                 <p class="weui-grid__label">身份证反面</p>
             </a>
             <a href="javascript:;" class="weui-grid" style="width:50%;" onclick="setvar(5)" id="selectfiles5">
                 <div class="">
-                    <img src="{$info['handid']|default='/imgs/add_icon.png'}" alt="" id="img5">
+                    <img src="{$info['handid']|default='/imgs/add_icon.png'}" style="width:100%" id="img5">
                     <input type="hidden" name="handid" value="{$info['handid']|default=''}" id="imgurl5">
                 </div>
                 <p class="weui-grid__label">手持身份证正面照</p>
@@ -156,7 +156,7 @@
             {if condition="$info['credtype']==1"}
             <a href="javascript:;" class="weui-grid show" style="width:50%;">
                 <div class="" onclick="setvar(6)" id="selectfiles6">
-                    <img src="{$info['groupcode']|default='/imgs/add_icon.png'}" alt="" id="img6">
+                    <img src="{$info['groupcode']|default='/imgs/add_icon.png'}" style="width:100%" id="img6">
                     <input type="hidden" name="groupcode" value="{$info['groupcode']|default=''}" id="imgurl6">
                 </div>
                 <p class="weui-grid__label">组织机构代码证</p>
@@ -385,6 +385,10 @@
                      window.location.href = '/index/sign/myinfo';
                  }
             });
+            }else if(data==2){
+                loading.hide(function() {
+               });
+                weui.alert('您已提交过信息！');
             }
            }
        });

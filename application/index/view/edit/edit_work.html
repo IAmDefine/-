@@ -202,10 +202,10 @@
         data:info,
         dataType:'JSON',
         success:function (data) {
-          if(data['status']==1){
+          if(data==1){
             window.location.href='/index/sign/pact_type'
-          }else{
-            weui.alert(data['msg']);
+          }else if(data==2){
+            weui.alert('您已提交过申请！');
           }
         }
       });
