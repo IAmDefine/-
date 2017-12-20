@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+ <meta charset="UTF-8">
+ <meta name="viewport" content="width=device-width, initial-scale=1.0">
+ <meta http-equiv="X-UA-Compatible" content="ie=edge">
+ <title>Document</title>
+</head>
+<body>
+  <h1>分享测试</h1>
+</body>
+<script src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>
+<script>
+ wx.config({
+   debug: false,
+   appId: '{$wxinfo.appId}',
+   timestamp: '{$wxinfo.timestamp}',
+   nonceStr: '{$wxinfo.nonceStr}',
+   signature: '{$wxinfo.signature}',
+   jsApiList: [
+    'onMenuShareAppMessage',
+   ]
+ });
+ wx.ready(function () {
+   wx.onMenuShareAppMessage({
+   title: '优星库', // 分享标题
+   desc: '明星&品牌商务合作交易平台！快来加入吧~',
+    link: 'http://www.tiansai.top/wechat/public/index/userinfo/index',
+
+   imgUrl: 'https://img2.youxingku.cn/20170612/1497245651-7383.jpg',
+   type: 'link',
+   dataUrl: '', 
+   success: function () {
+       alert('成功分享');
+   },
+   cancel: function () {
+       // 用户取消分享后执行的回调函数
+   }
+});
+ });
+</script>
+
+</html>

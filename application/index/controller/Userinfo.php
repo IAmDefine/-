@@ -24,9 +24,7 @@ class Userinfo extends Controller{
         //之后换成unionid
         $wxid = $wechatinfo['unionid'];
         $url = '/inter/index/userdetail';
-        
-        // $wxid = rand(111111,999999);
-        
+
         $data['wxpcopenid'] = $wxid;
         $sinfo = request_post($url,$data);
         if($sinfo['msg']=='ok'){
@@ -48,7 +46,6 @@ class Userinfo extends Controller{
             $url_goal = Session::get('url_goal');
             $this -> redirect($url_goal);
           }
-
         }else{
           Session::set('openid',$wxid);
           $this -> redirect('/index/userinfo/mylogin');
@@ -112,9 +109,6 @@ class Userinfo extends Controller{
     }else{
       return 2;
     }
-
-
-
   }
 
   //查询有没有填写信息
